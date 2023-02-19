@@ -50,7 +50,6 @@ export const useRoute = (isAuth) => {
         options={{
           tabBarIcon: ({ focused, size, color }) => (
             <AntDesign name="appstore-o" size={size} color={color} />
-            // <AntDesign name="appstore-o" size={24} color={"#212121"} />
           ),
         }}
       />
