@@ -31,8 +31,8 @@ export const CreatePostsScreen = () => {
   if (!permission.granted) {
     // Camera permissions are not granted yet
     return (
-      <View style={styles.container}>
-        <Text style={{ textAlign: "center", justifyContent: "center" }}>
+      <View style={styles.containerPermission}>
+        <Text style={styles.textPermission}>
           We need your permission to show the camera
         </Text>
         <Button onPress={requestPermission} title="grant permission" />
@@ -77,6 +77,17 @@ export const CreatePostsScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  containerPermission: {
+    flex: 1,
+    justifyContent: "center",
+    marginHorizontal: 30,
+  },
+  textPermission: {
+    fontSize: 20,
+    textAlign: "center",
+    justifyContent: "center",
+    marginBottom: 20,
   },
   camera: {
     height: 300,
