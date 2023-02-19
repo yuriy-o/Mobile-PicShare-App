@@ -1,7 +1,9 @@
 import { StatusBar } from "expo-status-bar";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
+
 import {
+  Button,
   ImageBackground,
   Keyboard,
   KeyboardAvoidingView,
@@ -16,10 +18,12 @@ import {
 import { useCallback, useState } from "react";
 import Logo from "../../assets/svg/add_33.svg";
 
-export const RegisterScreen = () => {
+export const RegisterScreen = ({ navigation }) => {
   const [isKeyboardShow, setIsKeyboardShow] = useState(false);
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const nameHandler = (text) => setName(text);
   const emailHandler = (text) => setEmail(text);
   const passwordHandler = (text) => setPassword(text);
 
@@ -44,9 +48,10 @@ export const RegisterScreen = () => {
   const keyboardHideInput = () => {
     setIsKeyboardShow(false);
     Keyboard.dismiss();
+    setName("");
     setEmail("");
     setPassword("");
-    console.log(`'email:' ${email}, 'password: ' ${password}`);
+    console.log(`'name:' ${name}, 'email:' ${email}, 'password: ' ${password}`);
   };
 
   return (
@@ -57,16 +62,27 @@ export const RegisterScreen = () => {
           style={styles.image}
         >
           <View style={styles.back}>
-            <Text style={styles.textTitle}>Увійти</Text>
+            <View style={styles.backAvatar}></View>
+            {/* <Logo width={40} height={40} /> */}
+
+            <Text style={styles.textTitle}>Регистрация</Text>
             <KeyboardAvoidingView
               behavior={Platform.OS == "ios" ? "padding" : "height"}
             >
               <View
                 style={{
                   ...styles.form,
-                  marginBottom: isKeyboardShow ? -100 : 45,
+                  marginBottom: isKeyboardShow ? -90 : 45,
                 }}
               >
+                <TextInput
+                  value={name}
+                  onChangeText={nameHandler}
+                  placeholder="Логін"
+                  placeholderTextColor="#BDBDBD"
+                  style={styles.input}
+                  onFocus={() => setIsKeyboardShow(true)}
+                />
                 <TextInput
                   value={email}
                   onChangeText={emailHandler}
@@ -88,13 +104,22 @@ export const RegisterScreen = () => {
                 <TouchableOpacity
                   style={styles.btn}
                   activeOpacity={0.8}
-                  onPress={keyboardHideInput}
+                  // onPress={keyboardHideInput}
+                  onPress={() => navigation.navigate("Main")}
                 >
-                  <Text style={styles.btnTitle}>Увійти</Text>
+                  <Text style={styles.btnTitle}>Зареєструватись</Text>
                 </TouchableOpacity>
-                <Text style={styles.textRegistration}>
-                  Немає облікового запису? Зареєструватись
-                </Text>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate("Login")}
+                  activeOpacity={0.8}
+                >
+                  <Text style={styles.textRegistration}>
+                    Вже є обліковий запис?{" "}
+                    <Text style={(styles.textRegistration, styles.textAction)}>
+                      Увійти
+                    </Text>
+                  </Text>
+                </TouchableOpacity>
               </View>
             </KeyboardAvoidingView>
 
@@ -127,13 +152,21 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
   },
-
+  backAvatar: {
+    position: "absolute",
+    top: -60,
+    width: 120,
+    height: 120,
+    borderRadius: 16,
+    backgroundColor: "#F6F6F6",
+    // marginTop: -60,
+  },
   textTitle: {
     fontFamily: "Roboto-Medium",
     fontSize: 30,
     color: "#212121",
     textAlign: "center",
-    marginTop: 32,
+    marginTop: 92,
     marginBottom: 32,
   },
   input: {
@@ -178,6 +211,10 @@ const styles = StyleSheet.create({
     color: "#1B4371",
     fontFamily: "Roboto-Regular",
     fontSize: 16,
+  },
+  textAction: {
+    color: "#053f82",
+    fontFamily: "Roboto-Medium",
   },
   form: {
     marginBottom: 45,
