@@ -91,12 +91,13 @@ export const LoginScreen = ({ navigation }) => {
                   style={styles.btn}
                   activeOpacity={0.8}
                   onPress={keyboardHideInput}
+                  // onPress={() => navigation.navigate("PostsScreen")}
                 >
                   <Text style={styles.btnTitle}>Увійти</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => navigation.navigate("Register")}
-                  activeOpacity={0.6}
+                  activeOpacity={0.7}
                 >
                   <Text style={styles.textLogin}>
                     Немає облікового запису?{" "}

@@ -1,9 +1,13 @@
+import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-export const Main = () => {
+export const Home = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.textTitle}>Головна сторінка</Text>
+      <Text style={styles.textTitle}>
+        Home - Після сабміту в LoginScreen, RegistrationScreen перекидає на
+        Home, де відразу показується екран PostsScreen
+      </Text>
     </View>
   );
 };
@@ -11,7 +15,8 @@ export const Main = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    justifyContent: "center",
+    alignItems: "center",
   },
   textTitle: {
     fontFamily: "Roboto-Medium",

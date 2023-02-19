@@ -104,14 +104,14 @@ export const RegisterScreen = ({ navigation }) => {
                 <TouchableOpacity
                   style={styles.btn}
                   activeOpacity={0.8}
-                  // onPress={keyboardHideInput}
-                  onPress={() => navigation.navigate("Main")}
+                  onPress={keyboardHideInput}
+                  // onPress={() => navigation.navigate("PostsScreen")}
                 >
                   <Text style={styles.btnTitle}>Зареєструватись</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => navigation.navigate("Login")}
-                  activeOpacity={0.8}
+                  activeOpacity={0.7}
                 >
                   <Text style={styles.textRegistration}>
                     Вже є обліковий запис?{" "}
