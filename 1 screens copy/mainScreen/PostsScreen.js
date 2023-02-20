@@ -3,8 +3,6 @@ import { StyleSheet, Text, View, FlatList, Image } from "react-native";
 
 export const PostsScreen = ({ route }) => {
   const [posts, setPosts] = useState([]);
-  // console.log("route.params", route.params);
-
   useEffect(() => {
     if (route.params) {
       setPosts((prevState) => [...prevState, route.params]);
@@ -17,10 +15,18 @@ export const PostsScreen = ({ route }) => {
         data={posts}
         keyExtractor={(item, indx) => indx.toString()}
         renderItem={({ item }) => (
-          <View style={styles.postContainer}>
-            <Image source={{ uri: item.photo }} style={styles.image} />
-            <Text style={styles.text}>{item.description}</Text>
-            <Text style={styles.text}>{item.location}</Text>
+          <View
+            style={{
+              marginBottom: 10,
+              marginHorizontal: 16,
+              justifyContent: "center",
+              // alignItems: "center",
+            }}
+          >
+            <Image
+              source={{ uri: item.photo }}
+              style={{ width: "100%", height: 240, borderRadius: 8 }}
+            />
           </View>
         )}
       />
@@ -33,21 +39,5 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     // alignItems: "center",
-  },
-  postContainer: {
-    marginBottom: 10,
-    marginHorizontal: 16,
-    justifyContent: "center",
-    // alignItems: "center",
-  },
-  image: {
-    width: "100%",
-    height: 240,
-    borderRadius: 8,
-    marginBottom: 8,
-  },
-  text: {
-    marginBottom: 11,
-    fontSize: 20,
   },
 });

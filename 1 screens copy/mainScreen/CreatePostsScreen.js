@@ -4,7 +4,6 @@ import {
   Image,
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -15,10 +14,6 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 export const CreatePostsScreen = ({ navigation }) => {
   const [camera, setCamera] = useState(null);
   const [photo, setPhoto] = useState("");
-  const [description, setDescription] = useState("");
-  const [location, setLocation] = useState("");
-  const descriptionHandler = (text) => setDescription(text);
-  const locationHandler = (text) => setLocation(text);
 
   const takePhoto = async () => {
     const photo = await camera.takePictureAsync();
@@ -26,8 +21,8 @@ export const CreatePostsScreen = ({ navigation }) => {
     // console.log("photo", camera);
   };
   const sendPhoto = () => {
-    // console.log("navigation", navigation);
-    navigation.navigate("Публікації", { photo, description, location });
+    //  console.log("navigation", navigation);
+    navigation.navigate("Публікації", { photo });
   };
 
   const [type, setType] = useState(CameraType.back);
@@ -79,25 +74,6 @@ export const CreatePostsScreen = ({ navigation }) => {
           </TouchableOpacity>
         </View>
       </Camera>
-      <View style={styles.dataContainer}>
-        <Text style={styles.dataLabel}>Завантажте фото</Text>
-        <TextInput
-          value={description}
-          onChangeText={descriptionHandler}
-          placeholder="Назва"
-          placeholderTextColor="#BDBDBD"
-          style={styles.input}
-          // onFocus={() => setIsKeyboardShow(true)}
-        />
-        <TextInput
-          value={location}
-          onChangeText={locationHandler}
-          placeholder="Місцевість"
-          placeholderTextColor="#BDBDBD"
-          style={styles.input}
-          // onFocus={() => setIsKeyboardShow(true)}
-        />
-      </View>
       <View style={styles.btnContainer}>
         <TouchableOpacity
           style={styles.btn}
@@ -118,15 +94,13 @@ const styles = StyleSheet.create({
   camera: {
     height: 240,
     marginTop: 32,
-    marginBottom: 8,
-    backgroundColor: "#fff",
-    // backgroundColor: "#E8E8E8",
+    backgroundColor: "#E8E8E8",
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 8,
   },
   buttonContainerIcon: {
-    flex: 4,
+    flex: 5,
     justifyContent: "center",
     marginTop: 50,
   },
@@ -197,29 +171,10 @@ const styles = StyleSheet.create({
   },
   btnTitle: {
     color: "#fff",
-    // fontFamily: "Roboto-Regular",
-    fontSize: 20,
+    fontFamily: "Roboto-Regular",
+    fontSize: 16,
   },
   btnContainer: {
     alignItems: "center",
-  },
-
-  dataContainer: {
-    marginHorizontal: 16,
-  },
-  dataLabel: {
-    fontSize: 20,
-    marginBottom: 35,
-  },
-  input: {
-    width: "100%",
-    height: 50,
-    padding: 15,
-    borderWidth: 1,
-    borderColor: "#E8E8E8",
-    backgroundColor: "#F6F6F6",
-    borderRadius: 8,
-    // fontFamily: "Roboto-Regular",
-    marginBottom: 16,
   },
 });
