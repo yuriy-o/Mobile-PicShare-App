@@ -43,7 +43,7 @@ export const useRoute = (isAuth) => {
     );
   }
   return (
-    <MainTab.Navigator tabBarOptions={{ showLabel: false }}>
+    <MainTab.Navigator screenOptions={{ tabBarShowLabel: false }}>
       <MainTab.Screen
         name="Публікації"
         component={PostsScreen}
