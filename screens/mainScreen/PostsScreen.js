@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View, FlatList, Image } from "react-native";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 export const PostsScreen = ({ route }) => {
   const [posts, setPosts] = useState([]);
@@ -19,8 +20,24 @@ export const PostsScreen = ({ route }) => {
         renderItem={({ item }) => (
           <View style={styles.postContainer}>
             <Image source={{ uri: item.photo }} style={styles.image} />
-            <Text style={styles.text}>{item.description}</Text>
-            <Text style={styles.text}>{item.location}</Text>
+            <Text style={styles.description}>{item.description}</Text>
+            <View style={styles.chatLocationContainer}>
+              <Ionicons
+                style={styles.chatIcon}
+                name="chatbox-outline"
+                size={24}
+                color="#BDBDBD"
+              />
+              <View style={styles.locationContainer}>
+                <Text style={styles.locationText}>{item.location}</Text>
+                <Ionicons
+                  style={styles.locationIcon}
+                  name="location-outline"
+                  size={24}
+                  color="#BDBDBD"
+                />
+              </View>
+            </View>
           </View>
         )}
       />
@@ -31,6 +48,7 @@ export const PostsScreen = ({ route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#fff",
     justifyContent: "center",
     // alignItems: "center",
   },
@@ -46,8 +64,32 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginBottom: 8,
   },
-  text: {
+  description: {
     marginBottom: 11,
     fontSize: 20,
+    color: "#212121",
+  },
+
+  chatLocationContainer: {
+    justifyContent: "space-between",
+    flexDirection: "row",
+    // alignContent: "space-between",
+  },
+  chatIcon: {
+    // position: "absolute",
+    // alignSelf: "center",
+  },
+  locationContainer: {
+    // alignSelf: "flex-end",
+    // alignItems: "center",
+    flexDirection: "row-reverse",
+  },
+  locationText: {
+    marginBottom: 11,
+    fontSize: 20,
+    color: "#212121",
+  },
+  locationIcon: {
+    marginRight: 8,
   },
 });
