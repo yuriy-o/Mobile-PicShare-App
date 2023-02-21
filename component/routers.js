@@ -8,6 +8,7 @@ const MainTab = createBottomTabNavigator();
 //icons import
 import { AntDesign } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
+import { SvgXml } from "react-native-svg";
 
 import { LoginScreen } from "../screens/auth/LoginScreen";
 import { RegisterScreen } from "../screens/auth/RegisterScreen";
@@ -17,10 +18,13 @@ import { CreatePostsScreen } from "../screens/mainScreen/CreatePostsScreen";
 import { ProfileScreen } from "../screens/mainScreen/ProfileScreen";
 import { StyleSheet, TouchableOpacity } from "react-native";
 
-export const useRoute = (isAuth) => {
-  const { size } = 35;
-  const { color } = "red";
+const addNewPostIcon = `
+  <svg xmlns="http://www.w3.org/2000/svg" width="354" height="213" viewBox="0 0 354 212.4">
+  <path  d="M-.64 113.55c2.44 41.18 28.74 70.26 55.56 83.8 19.99 10.09 34.23 10.68 58.86 10.68 45.61 0 93.79.54 139.04-.01 21.84-.27 38.18-6.15 53.32-15.64 57.07-35.78 63.54-118.19 12.02-161.92-24.83-21.08-45.64-24.68-79.75-24.68-45.5 0-93.94-.57-139.04.02-27.38.36-56.47 12.9-72.39 31.48-5.88 6.86-10.11 11.32-14.84 20.05-8.65 16-14.08 34.31-12.78 56.22zm174.39 26.25v-30.61h-30.61v-4.82h30.61V73.76h4.82v30.61h30.61v4.82h-30.61v30.61h-4.82z" style="fill:#ff6c00"/>
+  </svg>
+`;
 
+export const useRoute = (isAuth) => {
   if (!isAuth) {
     return (
       <Stack.Navigator initialRouteName="LoginScreen">
@@ -58,7 +62,13 @@ export const useRoute = (isAuth) => {
         component={CreatePostsScreen}
         options={{
           tabBarIcon: ({ focused, size, color }) => (
-            <Feather name="plus" size={size} color={color} />
+            // <Feather name="plus" size={size} color={color} />
+            <SvgXml
+              xml={addNewPostIcon}
+              width={70}
+              height={40}
+              fill="#FF6C00"
+            />
           ),
         }}
       />
@@ -75,32 +85,3 @@ export const useRoute = (isAuth) => {
     </MainTab.Navigator>
   );
 };
-
-{
-  /* <TouchableOpacity style={styles.btn} activeOpacity={0.8}></TouchableOpacity>;
-
-const styles = StyleSheet.create({
-  btn: {
-    width: 343,
-    height: 51,
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 7,
-    marginHorizontal: 30,
-    borderRadius: 100,
-    marginTop: 27,
-    marginBottom: 16,
-
-    ...Platform.select({
-      ios: {
-        backgroundColor: "transparent",
-        borderColor: "#f0f8ff",
-      },
-      android: {
-        backgroundColor: "#FF6C00",
-        borderColor: "transparent",
-      },
-    }),
-  },
-}); */
-}

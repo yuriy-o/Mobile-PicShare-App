@@ -73,15 +73,9 @@ const styles = StyleSheet.create({
   chatLocationContainer: {
     justifyContent: "space-between",
     flexDirection: "row",
-    // alignContent: "space-between",
   },
-  chatIcon: {
-    // position: "absolute",
-    // alignSelf: "center",
-  },
+  chatIcon: {},
   locationContainer: {
-    // alignSelf: "flex-end",
-    // alignItems: "center",
     flexDirection: "row-reverse",
   },
   locationText: {

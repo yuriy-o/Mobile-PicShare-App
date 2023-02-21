@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Camera, CameraType } from "expo-camera";
 import * as Location from "expo-location";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import {
   Button,
@@ -28,13 +27,13 @@ export const CreatePostsScreen = ({ navigation }) => {
   const [type, setType] = useState(CameraType.back);
   const [permission, requestPermission] = Camera.useCameraPermissions();
 
-  // const [isKeyboardShow, setIsKeyboardShow] = useState(false);
+  const [isKeyboardShow, setIsKeyboardShow] = useState(false);
   const keyboardHide = () => {
-    // setIsKeyboardShow(false);
+    setIsKeyboardShow(false);
     Keyboard.dismiss();
   };
   const keyboardHideInput = () => {
-    // setIsKeyboardShow(false);
+    setIsKeyboardShow(false);
     Keyboard.dismiss();
     setDescription("");
     setLocation("");
@@ -97,12 +96,7 @@ export const CreatePostsScreen = ({ navigation }) => {
 
   return (
     <TouchableWithoutFeedback onPress={keyboardHide}>
-      <KeyboardAvoidingView
-        // onLayout={onLayoutRootView}
-        style={styles.container}
-        behavior={Platform.OS == "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={Platform.OS == "ios" ? 0 : -100}
-      >
+      <View style={styles.container}>
         <View style={styles.cameraContainer}>
           <Camera style={styles.camera} ref={setCamera} type={type}>
             {photo && (
@@ -122,61 +116,68 @@ export const CreatePostsScreen = ({ navigation }) => {
                 style={styles.button}
                 onPress={toggleCameraType}
               >
-                <MaterialCommunityIcons
-                  name="camera-flip-outline"
-                  size={30}
-                  color="white"
-                />
+                <Text style={styles.text}>Flip Camera</Text>
               </TouchableOpacity>
             </View>
           </Camera>
         </View>
+
         <View style={styles.dataContainer}>
           <Text style={styles.dataLabel}>Завантажте фото</Text>
 
-          <View style={styles.form}>
-            <TextInput
-              value={description}
-              onChangeText={descriptionHandler}
-              placeholder="Назва..."
-              placeholderTextColor="#BDBDBD"
-              style={styles.input}
-              // onFocus={() => setIsKeyboardShow(true)}
-              // onBlur={() => setIsKeyboardShow(false)}
-            />
-
-            <View style={styles.locationContainer}>
-              <TextInput
-                value={location}
-                onChangeText={locationHandler}
-                placeholder="Місцевість"
-                placeholderTextColor="#BDBDBD"
-                style={styles.locationPlaceholder}
-                // onFocus={() => setIsKeyboardShow(true)}
-                // onBlur={() => setIsKeyboardShow(false)}
-              />
-              <Ionicons
-                style={styles.locationIcon}
-                name="location-outline"
-                size={24}
-                color="#BDBDBD"
-              />
-            </View>
-          </View>
-          <View style={styles.btnContainer}>
-            <TouchableOpacity
-              style={styles.btn}
-              activeOpacity={0.8}
-              onPress={() => {
-                sendPhoto();
-                keyboardHideInput();
+          <KeyboardAvoidingView
+            behavior={Platform.OS == "ios" ? "position" : "height"}
+            // behavior={Platform.OS == "ios" ? "padding" : "height"}
+          >
+            <View
+              style={{
+                ...styles.form,
+                marginBottom: isKeyboardShow ? 1 : 1,
               }}
             >
-              <Text style={styles.btnTitle}>Опублікувати</Text>
-            </TouchableOpacity>
-          </View>
+              <TextInput
+                value={description}
+                onChangeText={descriptionHandler}
+                placeholder="Назва..."
+                placeholderTextColor="#BDBDBD"
+                style={styles.input}
+                onFocus={() => setIsKeyboardShow(true)}
+                onBlur={() => setIsKeyboardShow(false)}
+              />
+
+              <View style={styles.locationContainer}>
+                <TextInput
+                  value={location}
+                  onChangeText={locationHandler}
+                  placeholder="Місцевість"
+                  placeholderTextColor="#BDBDBD"
+                  style={styles.locationPlaceholder}
+                  onFocus={() => setIsKeyboardShow(true)}
+                  onBlur={() => setIsKeyboardShow(false)}
+                />
+                <Ionicons
+                  style={styles.locationIcon}
+                  name="location-outline"
+                  size={24}
+                  color="#BDBDBD"
+                />
+              </View>
+            </View>
+            <View style={styles.btnContainer}>
+              <TouchableOpacity
+                style={styles.btn}
+                activeOpacity={0.8}
+                onPress={() => {
+                  sendPhoto();
+                  keyboardHideInput();
+                }}
+              >
+                <Text style={styles.btnTitle}>Опублікувати</Text>
+              </TouchableOpacity>
+            </View>
+          </KeyboardAvoidingView>
         </View>
-      </KeyboardAvoidingView>
+      </View>
     </TouchableWithoutFeedback>
   );
 };
@@ -213,8 +214,9 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   buttonIconContainer: {
-    flex: 1,
+    flex: 4,
     justifyContent: "center",
+    marginTop: 50,
   },
   backIcon: {
     backgroundColor: "#FFFFFF",
@@ -225,14 +227,20 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   buttonContainer: {
-    position: "absolute",
-    bottom: 5,
-    right: 5,
+    flex: 1,
+    flexDirection: "row",
+    backgroundColor: "transparent",
+    margin: 20,
   },
   button: {
     flex: 1,
     alignSelf: "flex-end",
     alignItems: "center",
+  },
+  text: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "white",
   },
 
   dataContainer: {
