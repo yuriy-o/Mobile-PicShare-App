@@ -1,6 +1,8 @@
 import db from "../../firebase/config";
 import { authSlice } from "./authReducer";
 
+const { updateUserProfile, authStateChange, authSignOut } = authSlice.actions;
+
 export const authSignUpUser =
   ({ nickname, email, password }) =>
   async (dispatch, getState) => {
@@ -45,7 +47,7 @@ export const authSignOutUser = () => async (dispatch, getState) => {
   dispatch(authSignOut());
 };
 
-export const authStateCahngeUser = () => async (dispatch, getState) => {
+export const authStateChangeUser = () => async (dispatch, getState) => {
   await db.auth().onAuthStateChanged((user) => {
     if (user) {
       const userUpdateProfile = {

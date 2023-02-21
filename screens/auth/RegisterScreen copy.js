@@ -1,9 +1,10 @@
+import React, { useCallback, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
+import { useDispatch } from "react-redux";
 
 import {
-  Button,
   ImageBackground,
   Keyboard,
   KeyboardAvoidingView,
@@ -15,16 +16,19 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import { useCallback, useState } from "react";
+
+import { authSignUpUser } from "../../redux/auth/authOperations";
 
 export const RegisterScreen = ({ navigation }) => {
-  const [isKeyboardShow, setIsKeyboardShow] = useState(false);
-  const [name, setName] = useState("");
+  // const [isKeyboardShow, setIsKeyboardShow] = useState(false);
+  const [nickName, setNickName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const nameHandler = (text) => setName(text);
+  const nameHandler = (text) => setNickName(text);
   const emailHandler = (text) => setEmail(text);
   const passwordHandler = (text) => setPassword(text);
+
+  const dispatch = useDispatch();
 
   const [fontsLoaded] = useFonts({
     "Roboto-Medium": require("../../assets/fonts/Roboto-Medium.ttf"),
@@ -41,91 +45,90 @@ export const RegisterScreen = ({ navigation }) => {
   }
 
   const keyboardHide = () => {
-    setIsKeyboardShow(false);
+    // setIsKeyboardShow(false);
     Keyboard.dismiss();
   };
-  const keyboardHideInput = () => {
-    setIsKeyboardShow(false);
+  const handleSubmit = () => {
+    // setIsKeyboardShow(false);
     Keyboard.dismiss();
-    setName("");
+    dispatch(authSignUpUser({ nickName, email, password }));
+    setNickName("");
     setEmail("");
     setPassword("");
-    console.log(`'name:' ${name}, 'email:' ${email}, 'password: ' ${password}`);
+    console.log(
+      `'nickName:' ${nickName}, 'email:' ${email}, 'password: ' ${password}`
+    );
   };
 
   return (
     <TouchableWithoutFeedback onPress={keyboardHide}>
-      <View style={styles.container} onLayout={onLayoutRootView}>
+      <KeyboardAvoidingView
+        onLayout={onLayoutRootView}
+        style={styles.container}
+        behavior={Platform.OS == "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={Platform.OS == "ios" ? 0 : -100}
+      >
         <ImageBackground
           source={require("../../assets/images/Photo_BG.png")}
           style={styles.image}
         >
           <View style={styles.back}>
             <View style={styles.backAvatar}></View>
-            {/* <Logo width={40} height={40} /> */}
 
             <Text style={styles.textTitle}>Регистрация</Text>
-            <KeyboardAvoidingView
-              behavior={Platform.OS == "ios" ? "padding" : "height"}
-            >
-              <View
-                style={{
-                  ...styles.form,
-                  marginBottom: isKeyboardShow ? -90 : 45,
-                }}
+
+            <View style={styles.form}>
+              <TextInput
+                value={nickName}
+                onChangeText={nameHandler}
+                placeholder="Логін"
+                placeholderTextColor="#BDBDBD"
+                style={styles.input}
+                // onFocus={() => setIsKeyboardShow(true)}
+              />
+              <TextInput
+                value={email}
+                onChangeText={emailHandler}
+                placeholder="Адреса електронної пошти"
+                placeholderTextColor="#BDBDBD"
+                style={styles.input}
+                // onFocus={() => setIsKeyboardShow(true)}
+              />
+              <TextInput
+                value={password}
+                onChangeText={passwordHandler}
+                placeholder="Пароль"
+                placeholderTextColor="#BDBDBD"
+                secureTextEntry={true}
+                style={styles.input}
+                // onFocus={() => setIsKeyboardShow(true)}
+              />
+
+              <TouchableOpacity
+                style={styles.btn}
+                activeOpacity={0.8}
+                onPress={handleSubmit}
+                // onPress={() => navigation.navigate("PostsScreen")}
               >
-                <TextInput
-                  value={name}
-                  onChangeText={nameHandler}
-                  placeholder="Логін"
-                  placeholderTextColor="#BDBDBD"
-                  style={styles.input}
-                  onFocus={() => setIsKeyboardShow(true)}
-                />
-                <TextInput
-                  value={email}
-                  onChangeText={emailHandler}
-                  placeholder="Адреса електронної пошти"
-                  placeholderTextColor="#BDBDBD"
-                  style={styles.input}
-                  onFocus={() => setIsKeyboardShow(true)}
-                />
-                <TextInput
-                  value={password}
-                  onChangeText={passwordHandler}
-                  placeholder="Пароль"
-                  placeholderTextColor="#BDBDBD"
-                  secureTextEntry={true}
-                  style={styles.input}
-                  onFocus={() => setIsKeyboardShow(true)}
-                />
-
-                <TouchableOpacity
-                  style={styles.btn}
-                  activeOpacity={0.8}
-                  onPress={keyboardHideInput}
-                  // onPress={() => navigation.navigate("PostsScreen")}
-                >
-                  <Text style={styles.btnTitle}>Зареєструватись</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => navigation.navigate("Login")}
-                  activeOpacity={0.7}
-                >
-                  <Text style={styles.textRegistration}>
-                    Вже є обліковий запис?{" "}
-                    <Text style={(styles.textRegistration, styles.textAction)}>
-                      Увійти
-                    </Text>
+                <Text style={styles.btnTitle}>Зареєструватись</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("Login")}
+                activeOpacity={0.7}
+              >
+                <Text style={styles.textRegistration}>
+                  Вже є обліковий запис?{" "}
+                  <Text style={(styles.textRegistration, styles.textAction)}>
+                    Увійти
                   </Text>
-                </TouchableOpacity>
-              </View>
-            </KeyboardAvoidingView>
+                </Text>
+              </TouchableOpacity>
+            </View>
 
-            {/* <StatusBar style="auto" /> */}
+            <StatusBar style="auto" />
           </View>
         </ImageBackground>
-      </View>
+      </KeyboardAvoidingView>
     </TouchableWithoutFeedback>
   );
 };

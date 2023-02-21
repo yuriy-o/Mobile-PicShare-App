@@ -1,6 +1,10 @@
+import React, { useCallback, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
+
+import { useDispatch } from "react-redux";
+import { authSignInUser } from "../../redux/auth/authOperations";
 
 import {
   ImageBackground,
@@ -14,7 +18,6 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import { useCallback, useState } from "react";
 
 export const LoginScreen = ({ navigation }) => {
   const [isKeyboardShow, setIsKeyboardShow] = useState(false);
@@ -22,6 +25,8 @@ export const LoginScreen = ({ navigation }) => {
   const [password, setPassword] = useState("");
   const emailHandler = (text) => setEmail(text);
   const passwordHandler = (text) => setPassword(text);
+
+  const dispatch = useDispatch();
 
   const [fontsLoaded] = useFonts({
     "Roboto-Medium": require("../../assets/fonts/Roboto-Medium.ttf"),
@@ -41,76 +46,74 @@ export const LoginScreen = ({ navigation }) => {
     setIsKeyboardShow(false);
     Keyboard.dismiss();
   };
-  const keyboardHideInput = () => {
+  const handleSubmit = () => {
     setIsKeyboardShow(false);
     Keyboard.dismiss();
+    dispatch(authSignInUser({ email, password }));
     setEmail("");
     setPassword("");
-    // console.log(`'email:' ${email}, 'password: ' ${password}`);
+    console.log(`'email:' ${email}, 'password: ' ${password}`);
   };
 
   return (
     <TouchableWithoutFeedback onPress={keyboardHide}>
-      <View style={styles.container} onLayout={onLayoutRootView}>
+      <KeyboardAvoidingView
+        onLayout={onLayoutRootView}
+        style={styles.container}
+        behavior={Platform.OS == "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={Platform.OS == "ios" ? 0 : -100}
+      >
         <ImageBackground
           source={require("../../assets/images/Photo_BG.png")}
           style={styles.image}
         >
           <View style={styles.back}>
             <Text style={styles.textTitle}>Увійти</Text>
-            <KeyboardAvoidingView
-              behavior={Platform.OS == "ios" ? "padding" : "height"}
-            >
-              <View
-                style={{
-                  ...styles.form,
-                  marginBottom: isKeyboardShow ? -100 : 45,
-                }}
+
+            <View style={styles.form}>
+              <TextInput
+                value={email}
+                onChangeText={emailHandler}
+                placeholder="Адреса електронної пошти"
+                placeholderTextColor="#BDBDBD"
+                style={styles.input}
+                onFocus={() => setIsKeyboardShow(true)}
+              />
+              <TextInput
+                value={password}
+                onChangeText={passwordHandler}
+                placeholder="Пароль"
+                placeholderTextColor="#BDBDBD"
+                secureTextEntry={true}
+                style={styles.input}
+                onFocus={() => setIsKeyboardShow(true)}
+              />
+
+              <TouchableOpacity
+                style={styles.btn}
+                activeOpacity={0.8}
+                onPress={handleSubmit}
+                // onPress={() => navigation.navigate("PostsScreen")}
               >
-                <TextInput
-                  value={email}
-                  onChangeText={emailHandler}
-                  placeholder="Адреса електронної пошти"
-                  placeholderTextColor="#BDBDBD"
-                  style={styles.input}
-                  onFocus={() => setIsKeyboardShow(true)}
-                />
-                <TextInput
-                  value={password}
-                  onChangeText={passwordHandler}
-                  placeholder="Пароль"
-                  placeholderTextColor="#BDBDBD"
-                  secureTextEntry={true}
-                  style={styles.input}
-                  onFocus={() => setIsKeyboardShow(true)}
-                />
-
-                <TouchableOpacity
-                  style={styles.btn}
-                  activeOpacity={0.8}
-                  onPress={keyboardHideInput}
-                  // onPress={() => navigation.navigate("PostsScreen")}
-                >
-                  <Text style={styles.btnTitle}>Увійти</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => navigation.navigate("Register")}
-                  activeOpacity={0.7}
-                >
-                  <Text style={styles.textLogin}>
-                    Немає облікового запису?{" "}
-                    <Text style={(styles.textLogin, styles.textAction)}>
-                      Зареєструватись
-                    </Text>
+                <Text style={styles.btnTitle}>Увійти</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("Register")}
+                activeOpacity={0.7}
+              >
+                <Text style={styles.textLogin}>
+                  Немає облікового запису?{" "}
+                  <Text style={(styles.textLogin, styles.textAction)}>
+                    Зареєструватись
                   </Text>
-                </TouchableOpacity>
-              </View>
-            </KeyboardAvoidingView>
+                </Text>
+              </TouchableOpacity>
+            </View>
 
-            {/* <StatusBar style="auto" /> */}
+            <StatusBar style="auto" />
           </View>
         </ImageBackground>
-      </View>
+      </KeyboardAvoidingView>
     </TouchableWithoutFeedback>
   );
 };
