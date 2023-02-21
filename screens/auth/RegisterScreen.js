@@ -18,14 +18,13 @@ import {
 } from "react-native";
 
 import { authSignUpUser } from "../../redux/auth/authOperations";
-import Logo from "../../assets/svg/add_33.svg";
 
 export const RegisterScreen = ({ navigation }) => {
   // const [isKeyboardShow, setIsKeyboardShow] = useState(false);
-  const [name, setName] = useState("");
+  const [nickName, setNickName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const nameHandler = (text) => setName(text);
+  const nameHandler = (text) => setNickName(text);
   const emailHandler = (text) => setEmail(text);
   const passwordHandler = (text) => setPassword(text);
 
@@ -52,11 +51,13 @@ export const RegisterScreen = ({ navigation }) => {
   const handleSubmit = () => {
     // setIsKeyboardShow(false);
     Keyboard.dismiss();
-    dispatch(authSignUpUser({ name, email, password }));
-    setName("");
+    dispatch(authSignUpUser({ nickName, email, password }));
+    setNickName("");
     setEmail("");
     setPassword("");
-    console.log(`'name:' ${name}, 'email:' ${email}, 'password: ' ${password}`);
+    console.log(
+      `'nickName:' ${nickName}, 'email:' ${email}, 'password: ' ${password}`
+    );
   };
 
   return (
@@ -78,7 +79,7 @@ export const RegisterScreen = ({ navigation }) => {
 
             <View style={styles.form}>
               <TextInput
-                value={name}
+                value={nickName}
                 onChangeText={nameHandler}
                 placeholder="Логін"
                 placeholderTextColor="#BDBDBD"

@@ -16,7 +16,6 @@ import {
   View,
 } from "react-native";
 import { useCallback, useState } from "react";
-import Logo from "../../assets/svg/add_33.svg";
 
 export const RegisterScreen = ({ navigation }) => {
   const [isKeyboardShow, setIsKeyboardShow] = useState(false);
