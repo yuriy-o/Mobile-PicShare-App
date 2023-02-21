@@ -1,6 +1,8 @@
+import React, { useCallback, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
+import { useDispatch } from "react-redux";
 
 import {
   ImageBackground,
@@ -14,7 +16,8 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import { useCallback, useState } from "react";
+
+import { authSignUpUser } from "../../redux/auth/authOperations";
 import Logo from "../../assets/svg/add_33.svg";
 
 export const RegisterScreen = ({ navigation }) => {
@@ -25,6 +28,8 @@ export const RegisterScreen = ({ navigation }) => {
   const nameHandler = (text) => setName(text);
   const emailHandler = (text) => setEmail(text);
   const passwordHandler = (text) => setPassword(text);
+
+  const dispatch = useDispatch();
 
   const [fontsLoaded] = useFonts({
     "Roboto-Medium": require("../../assets/fonts/Roboto-Medium.ttf"),
@@ -44,9 +49,10 @@ export const RegisterScreen = ({ navigation }) => {
     // setIsKeyboardShow(false);
     Keyboard.dismiss();
   };
-  const keyboardHideInput = () => {
+  const handleSubmit = () => {
     // setIsKeyboardShow(false);
     Keyboard.dismiss();
+    dispatch(authSignUpUser({ name, email, password }));
     setName("");
     setEmail("");
     setPassword("");
@@ -100,7 +106,7 @@ export const RegisterScreen = ({ navigation }) => {
               <TouchableOpacity
                 style={styles.btn}
                 activeOpacity={0.8}
-                onPress={keyboardHideInput}
+                onPress={handleSubmit}
                 // onPress={() => navigation.navigate("PostsScreen")}
               >
                 <Text style={styles.btnTitle}>Зареєструватись</Text>

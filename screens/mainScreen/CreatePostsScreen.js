@@ -70,7 +70,8 @@ export const CreatePostsScreen = ({ navigation }) => {
   };
   const sendPhoto = () => {
     // console.log("navigation", navigation);
-    navigation.navigate("Публікації", { photo, description, location });
+    navigation.navigate("DefaultScreen", { photo, description, location });
+    // navigation.navigate("Публікації", { photo, description, location });
   };
 
   if (!permission) {

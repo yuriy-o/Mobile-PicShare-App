@@ -47,7 +47,7 @@ export const LoginScreen = ({ navigation }) => {
     Keyboard.dismiss();
     setEmail("");
     setPassword("");
-    // console.log(`'email:' ${email}, 'password: ' ${password}`);
+    console.log(`'email:' ${email}, 'password: ' ${password}`);
   };
 
   return (
