@@ -75,7 +75,7 @@ export const LoginScreen = ({ navigation }) => {
         keyboardVerticalOffset={Platform.OS == "ios" ? 0 : -100}
       >
         <ImageBackground
-          source={require("../../assets/images/Photo_BG.png")}
+          source={require("../../assets/images/background_3.jpg")}
           style={styles.image}
         >
           <View style={styles.back}>

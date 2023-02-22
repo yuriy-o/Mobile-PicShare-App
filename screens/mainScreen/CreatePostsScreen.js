@@ -4,6 +4,8 @@ import * as Location from "expo-location";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
+import db from "../../firebase/config";
+
 import {
   Button,
   Image,
@@ -16,6 +18,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
+// import { TouchableOpacity } from "react-native-gesture-handler";
 
 export const CreatePostsScreen = ({ navigation }) => {
   const [camera, setCamera] = useState(null);
@@ -67,8 +70,10 @@ export const CreatePostsScreen = ({ navigation }) => {
     console.log("longitude", location.coords.longitude);
     setPhoto(photo.uri);
     // console.log("photo", camera);
+    console.log("photo uri", photo.uri);
   };
   const sendPhoto = () => {
+    uploadPhotoToServer();
     // console.log("navigation", navigation);
     navigation.navigate("DefaultScreen", { photo, description, location });
     // navigation.navigate("Публікації", { photo, description, location });
@@ -89,6 +94,16 @@ export const CreatePostsScreen = ({ navigation }) => {
       </View>
     );
   }
+
+  const uploadPhotoToServer = async () => {
+    const response = await fetch(photo);
+    const file = await response.blob();
+
+    const uniquePostId = Date.now().toString();
+
+    const data = await db.storage().ref(`postImage/${uniquePostId}`).put(file);
+    console.log("data", data);
+  };
 
   function toggleCameraType() {
     setType((current) =>
