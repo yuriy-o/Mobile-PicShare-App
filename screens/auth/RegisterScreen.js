@@ -3,6 +3,7 @@ import { StatusBar } from "expo-status-bar";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { useDispatch } from "react-redux";
+import { AntDesign } from "@expo/vector-icons";
 
 import {
   ImageBackground,
@@ -18,6 +19,13 @@ import {
 } from "react-native";
 
 import { authSignUpUser } from "../../redux/auth/authOperations";
+
+// import { SvgXml } from "react-native-svg";
+// const addNewPostIcon = `
+//   <svg xmlns="http://www.w3.org/2000/svg" width="354" height="213" viewBox="0 0 354 212.4">
+//   <path  d="M-.64 113.55c2.44 41.18 28.74 70.26 55.56 83.8 19.99 10.09 34.23 10.68 58.86 10.68 45.61 0 93.79.54 139.04-.01 21.84-.27 38.18-6.15 53.32-15.64 57.07-35.78 63.54-118.19 12.02-161.92-24.83-21.08-45.64-24.68-79.75-24.68-45.5 0-93.94-.57-139.04.02-27.38.36-56.47 12.9-72.39 31.48-5.88 6.86-10.11 11.32-14.84 20.05-8.65 16-14.08 34.31-12.78 56.22zm174.39 26.25v-30.61h-30.61v-4.82h30.61V73.76h4.82v30.61h30.61v4.82h-30.61v30.61h-4.82z" style="fill:#ff6c00"/>
+//   </svg>
+// `;
 
 const initialState = {
   email: "",
@@ -91,7 +99,20 @@ export const RegisterScreen = ({ navigation }) => {
           style={styles.image}
         >
           <View style={styles.back}>
-            <View style={styles.backAvatar}></View>
+            <View style={styles.backAvatar}>
+              <AntDesign
+                style={[styles.backIcon, styles.backIconPlus]}
+                name="pluscircleo"
+                size={26}
+                color="black"
+              />
+              <AntDesign
+                style={[styles.backIcon, styles.backIconClose]}
+                name="closecircleo"
+                size={26}
+                color="black"
+              />
+            </View>
 
             <Text style={styles.textTitle}>Регистрация</Text>
 
@@ -202,6 +223,20 @@ const styles = StyleSheet.create({
     backgroundColor: "#F6F6F6",
     // marginTop: -60,
   },
+
+  backIcon: {
+    position: "absolute",
+    right: -13,
+    bottom: 16,
+  },
+  backIconPlus: {
+    color: "#FF6C00",
+  },
+  backIconClose: {
+    color: "#F6F6F6",
+    bottom: 42,
+  },
+
   textTitle: {
     fontFamily: "Roboto-Medium",
     fontSize: 30,

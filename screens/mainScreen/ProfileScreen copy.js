@@ -24,6 +24,8 @@ export const ProfileScreen = () => {
       source={require("../../assets/images/background_3.jpg")}
       style={styles.image}
     >
+      <Text>3. ProfileScreen - відображаються всі пости</Text>
+      <Button title="signOut" onPress={signOut} />
       <View style={styles.back}>
         <View style={styles.backAvatar}>
           <AntDesign
@@ -43,26 +45,17 @@ export const ProfileScreen = () => {
         <Text style={styles.textTitle}>Profile Name</Text>
 
         <StatusBar style="auto" />
-        <AntDesign
-          style={styles.iconSignOut}
-          name="logout"
-          size={24}
-          color="black"
-          onPress={signOut}
-        />
+        <Button title="signOut" onPress={signOut} />
       </View>
     </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
-  delDescr: {
-    backgroundColor: "#fff",
-    textAlign: "center",
-  },
   image: {
     flex: 1,
     resizeMode: "cover",
+
     justifyContent: "flex-end",
     alignItems: "center",
   },
@@ -104,12 +97,5 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginTop: 92,
     marginBottom: 32,
-  },
-  iconSignOut: {
-    position: "absolute",
-    top: 22,
-    right: 16,
-    // color: "#F6F6F6",
-    color: "#999",
   },
 });
