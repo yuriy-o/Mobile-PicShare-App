@@ -35,6 +35,9 @@ export const LoginScreen = ({ navigation }) => {
 
   const dispatch = useDispatch();
 
+  const [isFocusEmail, setIsFocusEmail] = useState(false);
+  const [isFocusPassword, setIsFocusPassword] = useState(false);
+
   const [fontsLoaded] = useFonts({
     "Roboto-Medium": require("../../assets/fonts/Roboto-Medium.ttf"),
     "Roboto-Regular": require("../../assets/fonts/Roboto-Regular.ttf"),
@@ -86,8 +89,13 @@ export const LoginScreen = ({ navigation }) => {
                 }
                 placeholder="Адреса електронної пошти"
                 placeholderTextColor="#BDBDBD"
-                style={styles.input}
+                style={{
+                  ...styles.input,
+                  borderColor: isFocusEmail ? `#FF6C00` : `#E8E8E8`,
+                }}
                 // onFocus={() => setIsKeyboardShow(true)}
+                onFocus={() => setIsFocusEmail(true)}
+                onBlur={() => setIsFocusEmail(false)}
               />
               <TextInput
                 value={state.password}
@@ -97,8 +105,13 @@ export const LoginScreen = ({ navigation }) => {
                 placeholder="Пароль"
                 placeholderTextColor="#BDBDBD"
                 secureTextEntry={true}
-                style={styles.input}
+                style={{
+                  ...styles.input,
+                  borderColor: isFocusPassword ? `#FF6C00` : `#E8E8E8`,
+                }}
                 // onFocus={() => setIsKeyboardShow(true)}
+                onFocus={() => setIsFocusPassword(true)}
+                onBlur={() => setIsFocusPassword(false)}
               />
 
               <TouchableOpacity

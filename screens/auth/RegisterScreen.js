@@ -39,6 +39,15 @@ export const RegisterScreen = ({ navigation }) => {
 
   const dispatch = useDispatch();
 
+  const [isFocus, setIsFocus] = useState({
+    nickname: false,
+    email: false,
+    password: false,
+  });
+  // const [isFocusNickName, setIsFocusNickName] = useState(false);
+  // const [isFocusEmail, setIsFocusEmail] = useState(false);
+  // const [isFocusPassword, setIsFocusPassword] = useState(false);
+
   const [fontsLoaded] = useFonts({
     "Roboto-Medium": require("../../assets/fonts/Roboto-Medium.ttf"),
     "Roboto-Regular": require("../../assets/fonts/Roboto-Regular.ttf"),
@@ -94,8 +103,13 @@ export const RegisterScreen = ({ navigation }) => {
                 }
                 placeholder="Логін"
                 placeholderTextColor="#BDBDBD"
-                style={styles.input}
+                style={{
+                  ...styles.input,
+                  borderColor: isFocus.nickname ? `#FF6C00` : `#E8E8E8`,
+                }}
                 // onFocus={() => setIsKeyboardShow(true)}
+                onFocus={() => setIsFocus({ ...isFocus, nickname: true })}
+                onBlur={() => setIsFocus({ ...isFocus, nickname: false })}
               />
               <TextInput
                 value={state.email}
@@ -104,8 +118,13 @@ export const RegisterScreen = ({ navigation }) => {
                 }
                 placeholder="Адреса електронної пошти"
                 placeholderTextColor="#BDBDBD"
-                style={styles.input}
+                style={{
+                  ...styles.input,
+                  borderColor: isFocus.email ? `#FF6C00` : `#E8E8E8`,
+                }}
                 // onFocus={() => setIsKeyboardShow(true)}
+                onFocus={() => setIsFocus({ ...isFocus, email: true })}
+                onBlur={() => setIsFocus({ ...isFocus, email: false })}
               />
               <TextInput
                 value={state.password}
@@ -115,8 +134,13 @@ export const RegisterScreen = ({ navigation }) => {
                 placeholder="Пароль"
                 placeholderTextColor="#BDBDBD"
                 secureTextEntry={true}
-                style={styles.input}
+                style={{
+                  ...styles.input,
+                  borderColor: isFocus.password ? `#FF6C00` : `#E8E8E8`,
+                }}
                 // onFocus={() => setIsKeyboardShow(true)}
+                onFocus={() => setIsFocus({ ...isFocus, password: true })}
+                onBlur={() => setIsFocus({ ...isFocus, password: false })}
               />
 
               <TouchableOpacity

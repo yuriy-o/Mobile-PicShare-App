@@ -19,16 +19,34 @@ import {
 
 import { authSignUpUser } from "../../redux/auth/authOperations";
 
+const initialState = {
+  email: "",
+  password: "",
+  nickname: "",
+};
+
 export const RegisterScreen = ({ navigation }) => {
   // const [isKeyboardShow, setIsKeyboardShow] = useState(false);
-  const [nickName, setNickName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const nameHandler = (text) => setNickName(text);
-  const emailHandler = (text) => setEmail(text);
-  const passwordHandler = (text) => setPassword(text);
+
+  const [state, setState] = useState(initialState);
+  // const [nickName, setNickName] = useState("");
+  // const [email, setEmail] = useState("");
+  // const [password, setPassword] = useState("");
+
+  // const nameHandler = (text) => setNickName(text);
+  // const emailHandler = (text) => setEmail(text);
+  // const passwordHandler = (text) => setPassword(text);
 
   const dispatch = useDispatch();
+
+  const [isFocus, setIsFocus] = useState({
+    nickname: false,
+    email: false,
+    password: false,
+  });
+  // const [isFocusNickName, setIsFocusNickName] = useState(false);
+  // const [isFocusEmail, setIsFocusEmail] = useState(false);
+  // const [isFocusPassword, setIsFocusPassword] = useState(false);
 
   const [fontsLoaded] = useFonts({
     "Roboto-Medium": require("../../assets/fonts/Roboto-Medium.ttf"),
@@ -39,7 +57,6 @@ export const RegisterScreen = ({ navigation }) => {
       await SplashScreen.hideAsync();
     }
   }, [fontsLoaded]);
-
   if (!fontsLoaded) {
     return null;
   }
@@ -51,13 +68,14 @@ export const RegisterScreen = ({ navigation }) => {
   const handleSubmit = () => {
     // setIsKeyboardShow(false);
     Keyboard.dismiss();
-    dispatch(authSignUpUser({ nickName, email, password }));
-    setNickName("");
-    setEmail("");
-    setPassword("");
-    console.log(
-      `'nickName:' ${nickName}, 'email:' ${email}, 'password: ' ${password}`
-    );
+
+    dispatch(authSignUpUser(state));
+    // dispatch(authSignUpUser({ nickName, email, password }));
+
+    setState(initialState);
+    // setNickName("");
+    // setEmail("");
+    // setPassword("");
   };
 
   return (
@@ -79,29 +97,50 @@ export const RegisterScreen = ({ navigation }) => {
 
             <View style={styles.form}>
               <TextInput
-                value={nickName}
-                onChangeText={nameHandler}
+                value={state.nickname}
+                onChangeText={(value) =>
+                  setState((prevState) => ({ ...prevState, nickname: value }))
+                }
                 placeholder="Логін"
                 placeholderTextColor="#BDBDBD"
-                style={styles.input}
+                style={{
+                  ...styles.input,
+                  borderColor: isFocus.nickname ? `#FF6C00` : `#E8E8E8`,
+                }}
                 // onFocus={() => setIsKeyboardShow(true)}
+                onFocus={() => setIsFocus({ ...isFocus, nickname: true })}
+                onBlur={() => setIsFocus({ ...isFocus, nickname: false })}
               />
               <TextInput
-                value={email}
-                onChangeText={emailHandler}
+                value={state.email}
+                onChangeText={(value) =>
+                  setState((prevState) => ({ ...prevState, email: value }))
+                }
                 placeholder="Адреса електронної пошти"
                 placeholderTextColor="#BDBDBD"
-                style={styles.input}
+                style={{
+                  ...styles.input,
+                  borderColor: isFocus.email ? `#FF6C00` : `#E8E8E8`,
+                }}
                 // onFocus={() => setIsKeyboardShow(true)}
+                onFocus={() => setIsFocus({ ...isFocus, email: true })}
+                onBlur={() => setIsFocus({ ...isFocus, email: false })}
               />
               <TextInput
-                value={password}
-                onChangeText={passwordHandler}
+                value={state.password}
+                onChangeText={(value) =>
+                  setState((prevState) => ({ ...prevState, password: value }))
+                }
                 placeholder="Пароль"
                 placeholderTextColor="#BDBDBD"
                 secureTextEntry={true}
-                style={styles.input}
+                style={{
+                  ...styles.input,
+                  borderColor: isFocus.password ? `#FF6C00` : `#E8E8E8`,
+                }}
                 // onFocus={() => setIsKeyboardShow(true)}
+                onFocus={() => setIsFocus({ ...isFocus, password: true })}
+                onBlur={() => setIsFocus({ ...isFocus, password: false })}
               />
 
               <TouchableOpacity
