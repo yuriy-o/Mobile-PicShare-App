@@ -3,6 +3,7 @@ import { Camera, CameraType } from "expo-camera";
 import * as Location from "expo-location";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 import db from "../../firebase/config";
 
@@ -10,7 +11,6 @@ import {
   Button,
   Image,
   Keyboard,
-  KeyboardAvoidingView,
   StyleSheet,
   Text,
   TextInput,
@@ -18,7 +18,6 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-// import { TouchableOpacity } from "react-native-gesture-handler";
 
 export const CreatePostsScreen = ({ navigation }) => {
   const [camera, setCamera] = useState(null);
@@ -31,13 +30,10 @@ export const CreatePostsScreen = ({ navigation }) => {
   const [type, setType] = useState(CameraType.back);
   const [permission, requestPermission] = Camera.useCameraPermissions();
 
-  // const [isKeyboardShow, setIsKeyboardShow] = useState(false);
   const keyboardHide = () => {
-    // setIsKeyboardShow(false);
     Keyboard.dismiss();
   };
   const keyboardHideInput = () => {
-    // setIsKeyboardShow(false);
     Keyboard.dismiss();
     setDescription("");
     setLocation("");
@@ -76,7 +72,7 @@ export const CreatePostsScreen = ({ navigation }) => {
     uploadPhotoToServer();
     // console.log("navigation", navigation);
     navigation.navigate("DefaultScreen", { photo, description, location });
-    // navigation.navigate("Публікації", { photo, description, location });
+    //! navigation.navigate("Публікації", { photo, description, location });
   };
 
   if (!permission) {
@@ -113,11 +109,9 @@ export const CreatePostsScreen = ({ navigation }) => {
 
   return (
     <TouchableWithoutFeedback onPress={keyboardHide}>
-      <KeyboardAvoidingView
-        // onLayout={onLayoutRootView}
-        style={styles.container}
-        behavior={Platform.OS == "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={Platform.OS == "ios" ? 0 : -100}
+      <KeyboardAwareScrollView
+        resetScrollToCoords={{ x: 0, y: 0 }}
+        contentContainerStyle={styles.contentContainer}
       >
         <View style={styles.cameraContainer}>
           <Camera style={styles.camera} ref={setCamera} type={type}>
@@ -157,8 +151,6 @@ export const CreatePostsScreen = ({ navigation }) => {
               placeholder="Назва..."
               placeholderTextColor="#BDBDBD"
               style={styles.input}
-              // onFocus={() => setIsKeyboardShow(true)}
-              // onBlur={() => setIsKeyboardShow(false)}
             />
 
             <View style={styles.locationContainer}>
@@ -168,8 +160,6 @@ export const CreatePostsScreen = ({ navigation }) => {
                 placeholder="Місцевість"
                 placeholderTextColor="#BDBDBD"
                 style={styles.locationPlaceholder}
-                // onFocus={() => setIsKeyboardShow(true)}
-                // onBlur={() => setIsKeyboardShow(false)}
               />
               <Ionicons
                 style={styles.locationIcon}
@@ -192,14 +182,15 @@ export const CreatePostsScreen = ({ navigation }) => {
             </TouchableOpacity>
           </View>
         </View>
-      </KeyboardAvoidingView>
+      </KeyboardAwareScrollView>
     </TouchableWithoutFeedback>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  contentContainer: {
+    flexGrow: 1,
+    justifyContent: "center",
     backgroundColor: "#fff",
   },
 
@@ -252,6 +243,7 @@ const styles = StyleSheet.create({
   },
 
   dataContainer: {
+    flex: 1,
     marginHorizontal: 16,
   },
   dataLabel: {
@@ -261,6 +253,7 @@ const styles = StyleSheet.create({
   },
 
   form: {
+    flex: 1,
     // marginBottom: 45,
     alignItems: "center",
   },

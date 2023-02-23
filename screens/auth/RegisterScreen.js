@@ -20,13 +20,6 @@ import {
 
 import { authSignUpUser } from "../../redux/auth/authOperations";
 
-// import { SvgXml } from "react-native-svg";
-// const addNewPostIcon = `
-//   <svg xmlns="http://www.w3.org/2000/svg" width="354" height="213" viewBox="0 0 354 212.4">
-//   <path  d="M-.64 113.55c2.44 41.18 28.74 70.26 55.56 83.8 19.99 10.09 34.23 10.68 58.86 10.68 45.61 0 93.79.54 139.04-.01 21.84-.27 38.18-6.15 53.32-15.64 57.07-35.78 63.54-118.19 12.02-161.92-24.83-21.08-45.64-24.68-79.75-24.68-45.5 0-93.94-.57-139.04.02-27.38.36-56.47 12.9-72.39 31.48-5.88 6.86-10.11 11.32-14.84 20.05-8.65 16-14.08 34.31-12.78 56.22zm174.39 26.25v-30.61h-30.61v-4.82h30.61V73.76h4.82v30.61h30.61v4.82h-30.61v30.61h-4.82z" style="fill:#ff6c00"/>
-//   </svg>
-// `;
-
 const initialState = {
   email: "",
   password: "",
@@ -34,16 +27,7 @@ const initialState = {
 };
 
 export const RegisterScreen = ({ navigation }) => {
-  // const [isKeyboardShow, setIsKeyboardShow] = useState(false);
-
   const [state, setState] = useState(initialState);
-  // const [nickName, setNickName] = useState("");
-  // const [email, setEmail] = useState("");
-  // const [password, setPassword] = useState("");
-
-  // const nameHandler = (text) => setNickName(text);
-  // const emailHandler = (text) => setEmail(text);
-  // const passwordHandler = (text) => setPassword(text);
 
   const dispatch = useDispatch();
 
@@ -52,9 +36,6 @@ export const RegisterScreen = ({ navigation }) => {
     email: false,
     password: false,
   });
-  // const [isFocusNickName, setIsFocusNickName] = useState(false);
-  // const [isFocusEmail, setIsFocusEmail] = useState(false);
-  // const [isFocusPassword, setIsFocusPassword] = useState(false);
 
   const [fontsLoaded] = useFonts({
     "Roboto-Medium": require("../../assets/fonts/Roboto-Medium.ttf"),
@@ -70,20 +51,14 @@ export const RegisterScreen = ({ navigation }) => {
   }
 
   const keyboardHide = () => {
-    // setIsKeyboardShow(false);
     Keyboard.dismiss();
   };
   const handleSubmit = () => {
-    // setIsKeyboardShow(false);
     Keyboard.dismiss();
 
     dispatch(authSignUpUser(state));
-    // dispatch(authSignUpUser({ nickName, email, password }));
 
     setState(initialState);
-    // setNickName("");
-    // setEmail("");
-    // setPassword("");
   };
 
   return (
@@ -221,7 +196,6 @@ const styles = StyleSheet.create({
     height: 120,
     borderRadius: 16,
     backgroundColor: "#F6F6F6",
-    // marginTop: -60,
   },
 
   backIcon: {

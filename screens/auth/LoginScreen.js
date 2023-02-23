@@ -25,13 +25,8 @@ const initialState = {
 };
 
 export const LoginScreen = ({ navigation }) => {
-  // const [isKeyboardShow, setIsKeyboardShow] = useState(false);
-
   const [state, setState] = useState(initialState);
-  // const [email, setEmail] = useState("");
-  // const [password, setPassword] = useState("");
-  // const emailHandler = (text) => setEmail(text);
-  // const passwordHandler = (text) => setPassword(text);
+  
 
   const dispatch = useDispatch();
 
@@ -52,18 +47,12 @@ export const LoginScreen = ({ navigation }) => {
   }
 
   const keyboardHide = () => {
-    // setIsKeyboardShow(false);
     Keyboard.dismiss();
   };
   const handleSubmit = () => {
-    // setIsKeyboardShow(false);
     Keyboard.dismiss();
     dispatch(authSignInUser(state));
-    // dispatch(authSignInUser({ email, password }));
     setState(initialState);
-    // setEmail("");
-    // setPassword("");
-    // console.log(`'email:' ${email}, 'password: ' ${password}`);
   };
 
   return (
@@ -93,7 +82,6 @@ export const LoginScreen = ({ navigation }) => {
                   ...styles.input,
                   borderColor: isFocusEmail ? `#FF6C00` : `#E8E8E8`,
                 }}
-                // onFocus={() => setIsKeyboardShow(true)}
                 onFocus={() => setIsFocusEmail(true)}
                 onBlur={() => setIsFocusEmail(false)}
               />
@@ -109,7 +97,6 @@ export const LoginScreen = ({ navigation }) => {
                   ...styles.input,
                   borderColor: isFocusPassword ? `#FF6C00` : `#E8E8E8`,
                 }}
-                // onFocus={() => setIsKeyboardShow(true)}
                 onFocus={() => setIsFocusPassword(true)}
                 onBlur={() => setIsFocusPassword(false)}
               />
