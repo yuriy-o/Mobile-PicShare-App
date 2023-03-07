@@ -71,7 +71,7 @@ export const CreatePostsScreen = ({ navigation }) => {
   const sendPhoto = () => {
     uploadPhotoToServer();
     // console.log("navigation", navigation);
-    navigation.navigate("DefaultScreen", { photo, description, location });
+    navigation.navigate("DefaultScreenPosts", { photo, description, location });
     //! navigation.navigate("Публікації", { photo, description, location });
   };
 
