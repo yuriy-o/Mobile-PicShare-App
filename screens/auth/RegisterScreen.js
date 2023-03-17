@@ -53,6 +53,7 @@ export const RegisterScreen = ({ navigation }) => {
   const keyboardHide = () => {
     Keyboard.dismiss();
   };
+
   const handleSubmit = () => {
     Keyboard.dismiss();
 
@@ -107,6 +108,7 @@ export const RegisterScreen = ({ navigation }) => {
                 onFocus={() => setIsFocus({ ...isFocus, nickname: true })}
                 onBlur={() => setIsFocus({ ...isFocus, nickname: false })}
               />
+              {/* //! Зробити оптимізацію коду */}
               <TextInput
                 value={state.email}
                 onChangeText={(value) =>
@@ -122,6 +124,7 @@ export const RegisterScreen = ({ navigation }) => {
                 onFocus={() => setIsFocus({ ...isFocus, email: true })}
                 onBlur={() => setIsFocus({ ...isFocus, email: false })}
               />
+              {/* //! Зробити оптимізацію коду */}
               <TextInput
                 value={state.password}
                 onChangeText={(value) =>
@@ -138,7 +141,6 @@ export const RegisterScreen = ({ navigation }) => {
                 onFocus={() => setIsFocus({ ...isFocus, password: true })}
                 onBlur={() => setIsFocus({ ...isFocus, password: false })}
               />
-
               <TouchableOpacity
                 style={styles.btn}
                 activeOpacity={0.8}

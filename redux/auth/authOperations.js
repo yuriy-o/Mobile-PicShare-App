@@ -1,6 +1,7 @@
 import db from "../../firebase/config";
 import { authSlice } from "./authReducer";
 
+// https://youtu.be/faHR9Df-pvc?list=PLViULGko0FdhDiMwWW-Q2JBAJtSQVYptE&t=523
 const { updateUserProfile, authStateChange, authSignOut } = authSlice.actions;
 
 export const authSignUpUser =
@@ -22,10 +23,11 @@ export const authSignUpUser =
         userId: uid,
       };
 
+      // https://youtu.be/8TOVHzpaKnI?list=PLViULGko0FdhDiMwWW-Q2JBAJtSQVYptE&t=383
       dispatch(updateUserProfile(userUpdateProfile));
     } catch (error) {
-      console.log("error", error);
-      console.log("error.message", error.message);
+      console.log("authSignUpUser__error", error);
+      // console.log("error.message", error.message);
     }
   };
 
@@ -36,9 +38,9 @@ export const authSignInUser =
       const user = await db.auth().signInWithEmailAndPassword(email, password);
       console.log("user", user);
     } catch (error) {
-      console.log("error", error);
-      console.log("error.code", error.code);
-      console.log("error.message", error.message);
+      console.log("authSignInUser__error", error);
+      // console.log("error.code", error.code);
+      // console.log("error.message", error.message);
     }
   };
 
@@ -47,16 +49,40 @@ export const authSignOutUser = () => async (dispatch, getState) => {
   dispatch(authSignOut());
 };
 
+// ! Спостерігаємо за користувачем → перезавантаження додатку
+// export const authStateChangeUser = () => async (dispatch, getState) => {
+//   await db.auth().onAuthStateChanged((user) => {
+//     if (user) {
+//       const userUpdateProfile = {
+//         nickName: user.displayName,
+//         userId: user.uid,
+//       };
+
+//       dispatch(authStateChange({ stateChange: true }));
+//       dispatch(updateUserProfile(userUpdateProfile));
+//     }
+//   });
+// };
+
+//!f 16.03.2023
+//TODO await ??????
 export const authStateChangeUser = () => async (dispatch, getState) => {
-  await db.auth().onAuthStateChanged((user) => {
+  await db.auth().onAuthStateChanged(async (user) => {
     if (user) {
       const userUpdateProfile = {
         nickName: user.displayName,
         userId: user.uid,
       };
 
-      dispatch(authStateChange({ stateChange: true }));
-      dispatch(updateUserProfile(userUpdateProfile));
+      console.log("userUpdateProfile__user", user);
+      console.log("userUpdateProfile", userUpdateProfile);
+
+      try {
+        await dispatch(authStateChange({ stateChange: true }));
+        await dispatch(updateUserProfile(userUpdateProfile));
+      } catch (error) {
+        console.error(error);
+      }
     }
   });
 };

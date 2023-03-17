@@ -26,7 +26,7 @@ import { async } from "@firebase/util";
 
 export const CreatePostsScreen = ({ navigation }) => {
   const [camera, setCamera] = useState(null);
-  const [photo, setPhoto] = useState("");
+  const [photo, setPhoto] = useState(null);
   const [description, setDescription] = useState("");
   const [location, setLocation] = useState("");
   const descriptionHandler = (text) => setDescription(text);
@@ -63,7 +63,7 @@ export const CreatePostsScreen = ({ navigation }) => {
         // let location = await Location.getCurrentPositionAsync({});
         // setLocation(location);
       } catch (error) {
-        console.log("Error getting location", error);
+        console.log("getLocationAsync__Error", error);
       }
     };
 
@@ -106,15 +106,18 @@ export const CreatePostsScreen = ({ navigation }) => {
   }
 
   const uploadImage = async () => {
-    if (!image) {
+    if (!photo) {
       return;
     }
 
     try {
       setLoading(true);
-      const response = await fetch(image);
+      const response = await fetch(photo);
+
       const blobFile = await response.blob();
+
       const id = Date.now();
+
       const reference = ref(storage, `images/${id}`);
 
       const result = await uploadBytesResumable(reference, blobFile);

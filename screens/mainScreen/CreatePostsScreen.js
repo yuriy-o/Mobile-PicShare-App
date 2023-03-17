@@ -1,10 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { Camera, CameraType } from "expo-camera";
 import * as Location from "expo-location";
+import * as ImagePicker from "expo-image-picker";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
+import {
+  getDownloadURL,
+  ref,
+  uploadBytesResumable,
+  uploadBytes,
+} from "firebase/storage";
+import { collection, addDoc } from "firebase/firestore";
+
+import { storage } from "../../firebase/config";
 import db from "../../firebase/config";
 
 import {
@@ -19,9 +29,18 @@ import {
   View,
 } from "react-native";
 
+const initialState = {
+  img: null,
+  title: "",
+  location: "",
+  locationProps: "",
+};
+
 export const CreatePostsScreen = ({ navigation }) => {
+  const [state, setState] = useState(initialState);
   const [camera, setCamera] = useState(null);
-  const [photo, setPhoto] = useState("");
+  const [photo, setPhoto] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [description, setDescription] = useState("");
   const [location, setLocation] = useState("");
   const descriptionHandler = (text) => setDescription(text);
@@ -43,7 +62,7 @@ export const CreatePostsScreen = ({ navigation }) => {
   useEffect(() => {
     const getLocationAsync = async () => {
       try {
-        let { status } = await Location.requestForegroundPermissionsAsync();
+        const { status } = await Location.requestForegroundPermissionsAsync();
         if (status !== "granted") {
           setErrorMsg("Permission to access location was denied");
           return;
@@ -60,18 +79,24 @@ export const CreatePostsScreen = ({ navigation }) => {
   }, []);
 
   const takePhoto = async () => {
-    const photo = await camera.takePictureAsync();
+    const { uri } = await camera.takePictureAsync();
     const location = await Location.getCurrentPositionAsync();
-    console.log("latitude", location.coords.latitude);
-    console.log("longitude", location.coords.longitude);
-    setPhoto(photo.uri);
-    // console.log("photo", camera);
-    console.log("photo uri", photo.uri);
+    // console.log("latitude", location.coords.latitude);
+    // console.log("longitude", location.coords.longitude);
+
+    setPhoto(uri);
+    console.log("photo uri", uri);
   };
   const sendPhoto = () => {
+    // Завантажує фото на сервер
     uploadPhotoToServer();
+
     // console.log("navigation", navigation);
+
+    // Передає на сторінку DefaultScreenPosts об'єкт даних
+    // navigation.navigate("DefaultScreenPosts", { photo });
     navigation.navigate("DefaultScreenPosts", { photo, description, location });
+
     //! navigation.navigate("Публікації", { photo, description, location });
   };
 
@@ -91,6 +116,20 @@ export const CreatePostsScreen = ({ navigation }) => {
     );
   }
 
+  //! Завантажуємо фото на сервер
+  //! https://youtu.be/405KcYnnWtE?list=PLViULGko0FdhDiMwWW-Q2JBAJtSQVYptE&t=785
+  // const uploadPhotoToServer = async () => {
+  //   const response = await fetch(photo);
+  //   const file = await response.blob();
+
+  //   // Робить унікальний ідентифікатор
+  //   const uniquePostId = Date.now().toString();
+
+  //   const data = await db.storage().ref(`postImage/${uniquePostId}`).put(file);
+  //   console.log("data", data);
+  // };
+
+  //! v2
   const uploadPhotoToServer = async () => {
     const response = await fetch(photo);
     const file = await response.blob();
@@ -100,6 +139,74 @@ export const CreatePostsScreen = ({ navigation }) => {
     const data = await db.storage().ref(`postImage/${uniquePostId}`).put(file);
     console.log("data", data);
   };
+  //! v3
+  // const uploadPhotoToServer = async () => {
+  //   const response = await fetch(state.img);
+  //   const file = await response.blob();
+  //   const uniquePostId = Date.now().toString();
+  //   const mountainImagesRef = ref(storage, `postImage/${uniquePostId}`);
+  //   await uploadBytes(mountainImagesRef, file);
+
+  //   const processedPhoto = await getDownloadURL(
+  //     ref(storage, `postImage/${uniquePostId}`)
+  //   );
+
+  //   setState((prevState) => ({ ...prevState, img: processedPhoto }));
+  // };
+  //! v4
+  // const uploadPhotoToServer = async () => {
+  //   const response = await fetch(photo);
+  //   const file = await response.blob();
+  //   const uniquePostId = Date.now().toString();
+  //   const mountainImagesRef = ref(storage, `postImage/${uniquePostId}`);
+  //   await uploadBytes(mountainImagesRef, file);
+
+  //   const processedPhoto = await getDownloadURL(
+  //     ref(storage, `postImage/${uniquePostId}`)
+  //   );
+
+  //   setState((prevState) => ({ ...prevState, photo: processedPhoto }));
+  // };
+
+  //TODO код ментора
+  // const uploadPhotoToServer = async () => {
+  //   if (!photo) return;
+
+  //   try {
+  //     setLoading(true);
+  //     const response = await fetch(photo);
+
+  //     const blobFile = await response.blob();
+
+  //     const id = Date.now();
+
+  //     const reference = ref(storage, `images/${id}`);
+
+  //     const result = await uploadBytesResumable(reference, blobFile);
+  //     await getDownloadURL(result.ref);
+
+  //     setLoading(false);
+  //   } catch (err) {
+  //     setLoading(false);
+  //     Alert.alert("Try again \n", err.message);
+  //   }
+  // };
+
+  //todo завантаження фото з галереї
+  // const uploadPhotoFromGallery = async () => {
+  //   let userImage = await ImagePicker.launchImageLibraryAsync({
+  //     mediaTypes: ImagePicker.MediaTypeOptions.Images,
+  //     allowsEditing: true,
+  //     aspect: [5, 3],
+  //     quality: 1,
+  //   });
+  //   if (!userImage.canceled) {
+  //     setState((prevState) => ({
+  //       ...prevState,
+  //       img: userImage.assets[0].uri,
+  //     }));
+  //   }
+  // };
 
   function toggleCameraType() {
     setType((current) =>
