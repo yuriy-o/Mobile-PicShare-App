@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Camera, CameraType } from "expo-camera";
 import * as Location from "expo-location";
-import * as ImagePicker from "expo-image-picker";
+// import * as ImagePicker from "expo-image-picker";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+
+import { DefaultScreenPosts } from "../nestedScreens/DefaultScreenPosts";
 
 import {
   getDownloadURL,
@@ -15,7 +17,7 @@ import {
 import { collection, addDoc } from "firebase/firestore";
 
 import { storage } from "../../firebase/config";
-import db from "../../firebase/config";
+import { db } from "../../firebase/config";
 
 import {
   Button,
@@ -30,9 +32,9 @@ import {
 } from "react-native";
 
 const initialState = {
-  img: null,
-  title: "",
-  location: "",
+  photo: null,
+  description: "",
+  locationName: "",
   locationProps: "",
 };
 
@@ -40,12 +42,14 @@ export const CreatePostsScreen = ({ navigation }) => {
   const [state, setState] = useState(initialState);
   const [camera, setCamera] = useState(null);
   const [photo, setPhoto] = useState(null);
+  const [location, setLocation] = useState(null);
   const [loading, setLoading] = useState(false);
   const [description, setDescription] = useState("");
-  const [location, setLocation] = useState("");
+  const [locationName, setLocationName] = useState("");
   const descriptionHandler = (text) => setDescription(text);
-  const locationHandler = (text) => setLocation(text);
+  const locationHandler = (text) => setLocationName(text);
 
+  // Вибір камери
   const [type, setType] = useState(CameraType.back);
   const [permission, requestPermission] = Camera.useCameraPermissions();
 
@@ -55,7 +59,7 @@ export const CreatePostsScreen = ({ navigation }) => {
   const keyboardHideInput = () => {
     Keyboard.dismiss();
     setDescription("");
-    setLocation("");
+    setLocationName("");
   };
 
   //! Перероблений код з try/catch на Запрос від локації
@@ -81,23 +85,30 @@ export const CreatePostsScreen = ({ navigation }) => {
   const takePhoto = async () => {
     const { uri } = await camera.takePictureAsync();
     const location = await Location.getCurrentPositionAsync();
-    // console.log("latitude", location.coords.latitude);
-    // console.log("longitude", location.coords.longitude);
+    // console.log("takePhoto__location", location);
+    // console.log("takePhoto__latitude", location.coords.latitude);
+    // console.log("takePhoto__longitude", location.coords.longitude);
 
     setPhoto(uri);
-    console.log("photo uri", uri);
+    setLocation(location);
+    // console.log("photo uri", uri);
   };
   const sendPhoto = () => {
     // Завантажує фото на сервер
     uploadPhotoToServer();
+    // console.log("sendPhoto");
 
     // console.log("navigation", navigation);
 
     // Передає на сторінку DefaultScreenPosts об'єкт даних
-    // navigation.navigate("DefaultScreenPosts", { photo });
-    navigation.navigate("DefaultScreenPosts", { photo, description, location });
+    navigation.navigate("DefaultScreenPosts", {
+      photo,
+      location,
+      description,
+      locationName,
+    });
 
-    //! navigation.navigate("Публікації", { photo, description, location });
+    //! navigation.navigate("Публікації", { photo, description, locationName });
   };
 
   if (!permission) {
@@ -130,20 +141,23 @@ export const CreatePostsScreen = ({ navigation }) => {
   // };
 
   //! v2
-  const uploadPhotoToServer = async () => {
-    const response = await fetch(photo);
-    const file = await response.blob();
-
-    const uniquePostId = Date.now().toString();
-
-    const data = await db.storage().ref(`postImage/${uniquePostId}`).put(file);
-    console.log("data", data);
-  };
-  //! v3
   // const uploadPhotoToServer = async () => {
-  //   const response = await fetch(state.img);
-  //   const file = await response.blob();
+  //   console.log("uploadPhotoToServer__photo", photo);
+  //   const response = await fetch(photo);
+  //   const file = await response.blob(); //Переводимо фото в формат blob
+
   //   const uniquePostId = Date.now().toString();
+
+  //   await firebase.storage().ref(`postImage/${uniquePostId}`).put(file);
+  // };
+
+  //! v3__D
+  // const uploadPhotoToServer = async () => {
+  //   const response = await fetch(state.photo);
+  //   const file = await response.blob();
+
+  //   const uniquePostId = Date.now().toString();
+
   //   const mountainImagesRef = ref(storage, `postImage/${uniquePostId}`);
   //   await uploadBytes(mountainImagesRef, file);
 
@@ -151,7 +165,7 @@ export const CreatePostsScreen = ({ navigation }) => {
   //     ref(storage, `postImage/${uniquePostId}`)
   //   );
 
-  //   setState((prevState) => ({ ...prevState, img: processedPhoto }));
+  //   setState((prevState) => ({ ...prevState, photo: processedPhoto }));
   // };
   //! v4
   // const uploadPhotoToServer = async () => {
@@ -169,28 +183,35 @@ export const CreatePostsScreen = ({ navigation }) => {
   // };
 
   //TODO код ментора
-  // const uploadPhotoToServer = async () => {
-  //   if (!photo) return;
+  const uploadPhotoToServer = async () => {
+    if (!photo) return;
 
-  //   try {
-  //     setLoading(true);
-  //     const response = await fetch(photo);
+    try {
+      // setLoading(true);
+      const response = await fetch(photo);
 
-  //     const blobFile = await response.blob();
+      const blobFile = await response.blob();
 
-  //     const id = Date.now();
+      const id = Date.now();
 
-  //     const reference = ref(storage, `images/${id}`);
+      const reference = ref(storage, `images/${id}`);
 
-  //     const result = await uploadBytesResumable(reference, blobFile);
-  //     await getDownloadURL(result.ref);
+      const result = await uploadBytesResumable(reference, blobFile);
+      const processedPhoto = await getDownloadURL(result.ref);
 
-  //     setLoading(false);
-  //   } catch (err) {
-  //     setLoading(false);
-  //     Alert.alert("Try again \n", err.message);
-  //   }
-  // };
+      const processedPhoto22 = await getDownloadURL(
+        ref(storage, `images/${id}`)
+      );
+
+      console.log("processedPhoto", processedPhoto);
+      console.log("processedPhoto22", processedPhoto22);
+
+      // setLoading(false);
+    } catch (err) {
+      // setLoading(false);
+      Alert.alert("Try again \n", err.message);
+    }
+  };
 
   //todo завантаження фото з галереї
   // const uploadPhotoFromGallery = async () => {
@@ -221,7 +242,9 @@ export const CreatePostsScreen = ({ navigation }) => {
         contentContainerStyle={styles.contentContainer}
       >
         <View style={styles.cameraContainer}>
+          {/* Додаємо камеру */}
           <Camera style={styles.camera} ref={setCamera} type={type}>
+            {/* відображаємо прев'юшку фото поверх екрану камери */}
             {photo && (
               <View style={styles.takePhotoContainer}>
                 <Image source={{ uri: photo }} style={styles.image} />
@@ -262,7 +285,7 @@ export const CreatePostsScreen = ({ navigation }) => {
 
             <View style={styles.locationContainer}>
               <TextInput
-                value={location}
+                value={locationName}
                 onChangeText={locationHandler}
                 placeholder="Місцевість"
                 placeholderTextColor="#BDBDBD"
