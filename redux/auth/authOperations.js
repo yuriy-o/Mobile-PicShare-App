@@ -1,4 +1,5 @@
 import db from "../../firebase/config";
+// import auth from "../../firebase/config";
 import { authSlice } from "./authReducer";
 
 // https://youtu.be/faHR9Df-pvc?list=PLViULGko0FdhDiMwWW-Q2JBAJtSQVYptE&t=523
@@ -27,7 +28,7 @@ export const authSignUpUser =
       dispatch(updateUserProfile(userUpdateProfile));
     } catch (error) {
       console.log("authSignUpUser__error", error);
-      // console.log("error.message", error.message);
+      console.log("authSignUpUser__error.message", error.message);
     }
   };
 
@@ -39,8 +40,7 @@ export const authSignInUser =
       console.log("user", user);
     } catch (error) {
       console.log("authSignInUser__error", error);
-      // console.log("error.code", error.code);
-      // console.log("error.message", error.message);
+      console.log("authSignInUser__error.message", error.message);
     }
   };
 
@@ -64,25 +64,96 @@ export const authSignOutUser = () => async (dispatch, getState) => {
 //   });
 // };
 
-//!f 16.03.2023
-//TODO await ??????
 export const authStateChangeUser = () => async (dispatch, getState) => {
-  await db.auth().onAuthStateChanged(async (user) => {
+  db.auth().onAuthStateChanged((user) => {
     if (user) {
       const userUpdateProfile = {
         nickName: user.displayName,
         userId: user.uid,
       };
-
-      console.log("userUpdateProfile__user", user);
-      console.log("userUpdateProfile", userUpdateProfile);
-
-      try {
-        await dispatch(authStateChange({ stateChange: true }));
-        await dispatch(updateUserProfile(userUpdateProfile));
-      } catch (error) {
-        console.error(error);
-      }
+      dispatch(authStateChange({ stateChange: true }));
+      dispatch(updateUserProfile(userUpdateProfile));
     }
   });
+  return Promise.resolve();
 };
+
+// export const authStateChangeUser = () => async (dispatch, getState) => {
+//   await auth.auth().onAuthStateChanged((user) => {
+//     if (user) {
+//       const userUpdateProfile = {
+//         nickName: user.displayName,
+//         userId: user.uid,
+//       };
+
+//       dispatch(authStateChange({ stateChange: true }));
+//       dispatch(updateUserProfile(userUpdateProfile));
+//     }
+//   });
+// };
+
+// export const authStateChangeUser = () => async (dispatch, getState) => {
+//   try {
+//     await new Promise((resolve) => {
+//       db.auth().onAuthStateChanged(async (user) => {
+//         if (user) {
+//           const userUpdateProfile = {
+//             nickName: user.displayName,
+//             userId: user.uid,
+//           };
+
+//           dispatch(authStateChange({ stateChange: true }));
+//           dispatch(updateUserProfile(userUpdateProfile));
+//         }
+//         resolve();
+//       });
+//     });
+//   } catch (error) {
+//     console.error(error);
+//   }
+// };
+
+//! 18.03.2023
+// import { getAuth, onAuthStateChanged } from "firebase/auth";
+// const auth = getAuth();
+
+// export const authStateChangeUser = () => async (dispatch, getState) => {
+//   try {
+//     await new Promise((resolve) => {
+//       onAuthStateChanged(auth, async (user) => {
+//         if (user) {
+//           const userUpdateProfile = {
+//             nickName: user.displayName,
+//             userId: user.uid,
+//           };
+
+//           dispatch(authStateChange({ stateChange: true }));
+//           dispatch(updateUserProfile(userUpdateProfile));
+//         }
+//         resolve();
+//       });
+//     });
+//   } catch (error) {
+//     console.error(error);
+//   }
+// };
+
+//! 16.03.2023
+//TODO await ??????
+// export const authStateChangeUser = () => async (dispatch, getState) => {
+//   await db.auth().onAuthStateChanged(async (user) => {
+//     if (user) {
+//       const userUpdateProfile = {
+//         nickName: user.displayName,
+//         userId: user.uid,
+//       };
+
+//       try {
+//         await dispatch(authStateChange({ stateChange: true }));
+//         await dispatch(updateUserProfile(userUpdateProfile));
+//       } catch (error) {
+//         console.error(error);
+//       }
+//     }
+//   });
+// };
