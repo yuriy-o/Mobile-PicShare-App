@@ -1,10 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View, FlatList, Image } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  Image,
+  TouchableOpacity,
+} from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
-export const DefaultScreenPosts = ({ route }) => {
+export const DefaultScreenPosts = ({ navigation, route }) => {
   const [posts, setPosts] = useState([]);
-  // console.log("route.params", route.params);
+  // console.log("DefaultScreenPosts__posts", posts);
+  // console.log("DefaultScreenPosts__route", route);
+  // console.log("DefaultScreenPosts__route.params", route.params);
 
   useEffect(() => {
     if (route.params) {
@@ -12,8 +21,19 @@ export const DefaultScreenPosts = ({ route }) => {
     }
   }, [route.params]);
 
+  const viewMap = () => {
+    navigation.navigate("Map", { posts });
+    // navigation.navigate("MapScreen", { location });
+  };
+  const viewComment = () => {
+    navigation.navigate("Comment");
+    // navigation.navigate("CommentsScreen", { description });
+  };
+
   return (
     <View style={styles.container}>
+      {/* FlatList рендерить на екрані лише ті елементи, які видно на екрані.
+      Інші будуть рендеритися лише тоді, коли потраплять у в'юпорт телефону. */}
       <FlatList
         data={posts}
         keyExtractor={(item, indx) => indx.toString()}
@@ -27,14 +47,21 @@ export const DefaultScreenPosts = ({ route }) => {
                 name="chatbox-outline"
                 size={24}
                 color="#BDBDBD"
+                onPress={() => {
+                  viewComment();
+                }}
               />
+
               <View style={styles.locationContainer}>
-                <Text style={styles.locationText}>{item.location}</Text>
+                <Text style={styles.locationText}>{item.locationName}</Text>
                 <Ionicons
                   style={styles.locationIcon}
                   name="location-outline"
                   size={24}
                   color="#BDBDBD"
+                  onPress={() => {
+                    viewMap();
+                  }}
                 />
               </View>
             </View>
