@@ -34,7 +34,7 @@ import {
 
 const initialState = {
   photo: null,
-  description: "",
+  comment: "",
   locationName: "",
   locationProps: "",
 };
@@ -46,9 +46,9 @@ export const CreatePostsScreen = ({ navigation }) => {
   const [photoURL, setPhotoURL] = useState(null);
   const [location, setLocation] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [description, setDescription] = useState("");
+  const [comment, setComment] = useState("");
   const [locationName, setLocationName] = useState("");
-  const descriptionHandler = (text) => setDescription(text);
+  const commentHandler = (text) => setComment(text);
   const locationHandler = (text) => setLocationName(text);
 
   const { userId, nickName } = useSelector((state) => state.auth);
@@ -62,7 +62,7 @@ export const CreatePostsScreen = ({ navigation }) => {
   };
   const keyboardHideInput = () => {
     Keyboard.dismiss();
-    setDescription("");
+    setComment("");
     setLocationName("");
   };
 
@@ -78,7 +78,6 @@ export const CreatePostsScreen = ({ navigation }) => {
         let location = await Location.getCurrentPositionAsync({});
         //? або
         // const location = await Location.getCurrentPositionAsync();
-
         // setLocation(location);
         setLocation(location.coords);
       } catch (error) {
@@ -92,19 +91,11 @@ export const CreatePostsScreen = ({ navigation }) => {
   const takePhoto = async () => {
     const { uri } = await camera.takePictureAsync();
     setPhoto(uri);
-    // const location = await Location.getCurrentPositionAsync();
-    // setLocation(location);
   };
   const sendPhoto = () => {
     uploadPostToServer();
-
-    // Передає на сторінку DefaultScreenPosts об'єкт даних
-    navigation.navigate("DefaultScreenPosts", {
-      photo,
-      location,
-      description,
-      locationName,
-    });
+    // Переходимо на сторінку DefaultScreenPosts
+    navigation.navigate("DefaultScreenPosts");
   };
 
   if (!permission) {
@@ -151,7 +142,7 @@ export const CreatePostsScreen = ({ navigation }) => {
     const createPost = await addDoc(collection(db, "posts"), {
       photoURL,
       location,
-      description,
+      comment,
       locationName,
       userId,
       nickName,
@@ -221,8 +212,8 @@ export const CreatePostsScreen = ({ navigation }) => {
 
           <View style={styles.form}>
             <TextInput
-              value={description}
-              onChangeText={descriptionHandler}
+              value={comment}
+              onChangeText={commentHandler}
               placeholder="Назва..."
               placeholderTextColor="#BDBDBD"
               style={styles.input}

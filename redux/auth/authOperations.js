@@ -50,68 +50,19 @@ export const authSignOutUser = () => async (dispatch, getState) => {
 };
 
 // ! Спостерігаємо за користувачем → перезавантаження додатку
-// export const authStateChangeUser = () => async (dispatch, getState) => {
-//   await db.auth().onAuthStateChanged((user) => {
-//     if (user) {
-//       const userUpdateProfile = {
-//         nickName: user.displayName,
-//         userId: user.uid,
-//       };
-
-//       dispatch(authStateChange({ stateChange: true }));
-//       dispatch(updateUserProfile(userUpdateProfile));
-//     }
-//   });
-// };
-
 export const authStateChangeUser = () => async (dispatch, getState) => {
-  db.auth().onAuthStateChanged((user) => {
+  await db.auth().onAuthStateChanged((user) => {
     if (user) {
       const userUpdateProfile = {
         nickName: user.displayName,
         userId: user.uid,
       };
+
       dispatch(authStateChange({ stateChange: true }));
       dispatch(updateUserProfile(userUpdateProfile));
     }
   });
-  return Promise.resolve();
 };
-
-// export const authStateChangeUser = () => async (dispatch, getState) => {
-//   await auth.auth().onAuthStateChanged((user) => {
-//     if (user) {
-//       const userUpdateProfile = {
-//         nickName: user.displayName,
-//         userId: user.uid,
-//       };
-
-//       dispatch(authStateChange({ stateChange: true }));
-//       dispatch(updateUserProfile(userUpdateProfile));
-//     }
-//   });
-// };
-
-// export const authStateChangeUser = () => async (dispatch, getState) => {
-//   try {
-//     await new Promise((resolve) => {
-//       db.auth().onAuthStateChanged(async (user) => {
-//         if (user) {
-//           const userUpdateProfile = {
-//             nickName: user.displayName,
-//             userId: user.uid,
-//           };
-
-//           dispatch(authStateChange({ stateChange: true }));
-//           dispatch(updateUserProfile(userUpdateProfile));
-//         }
-//         resolve();
-//       });
-//     });
-//   } catch (error) {
-//     console.error(error);
-//   }
-// };
 
 //! 18.03.2023
 // import { getAuth, onAuthStateChanged } from "firebase/auth";

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -9,38 +9,81 @@ import {
 } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
+import firebase from "firebase/app";
+import "firebase/firestore";
+import { collection, getDocs, doc, onSnapshot } from "firebase/firestore";
+import db from "../../firebase/config";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { storage } from "../../firebase/config";
+
 export const DefaultScreenPosts = ({ navigation, route }) => {
   const [posts, setPosts] = useState([]);
-  // console.log("DefaultScreenPosts__posts", posts);
-  // console.log("DefaultScreenPosts__route", route);
-  // console.log("DefaultScreenPosts__route.params", route.params);
+
+  const getAllPost = async () => {
+    await db
+      .firestore()
+      .collection("posts")
+      .onSnapshot((data) =>
+        setPosts(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+      );
+  };
 
   useEffect(() => {
-    if (route.params) {
-      setPosts((prevState) => [...prevState, route.params]);
-    }
-  }, [route.params]);
+    console.log("d");
+    getAllPost();
+  }, []);
+
+  //! v3
+  // const getAllPost = async () => {
+  //   const querySnapshot = await getDocs(collection(db, "posts"));
+  //   setPosts(querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+  // };
+
+  // //! v4
+  // const getAllPost = async () => {
+  //   await db
+  //     .firestore()
+  //     .collection("posts")
+  //     .onSnapshot((data) =>
+  //       setPosts(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+  //     );
+  // };
+
+  // useEffect(() => {
+  //   getAllPost();
+  // }, []);
+
+  //! v6
+  // const getAllPost = useCallback(async () => {
+  //   try {
+  //     const data = await db.firestore().collection("posts").get();
+  //     setPosts(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+  //   } catch (error) {
+  //     console.error("Error getting posts: ", error);
+  //   }
+  // }, []);
+
+  // useEffect(() => {
+  //   getAllPost();
+  // }, [getAllPost]);
 
   const viewMap = () => {
-    navigation.navigate("Map", { posts });
-    // navigation.navigate("MapScreen", { location });
+    navigation.navigate("Map", { location: item.location });
   };
   const viewComment = () => {
-    navigation.navigate("Comment");
-    // navigation.navigate("CommentsScreen", { description });
+    navigation.navigate("Comment", { postId: item.id });
   };
 
   return (
     <View style={styles.container}>
-      {/* FlatList рендерить на екрані лише ті елементи, які видно на екрані.
-      Інші будуть рендеритися лише тоді, коли потраплять у в'юпорт телефону. */}
       <FlatList
         data={posts}
         keyExtractor={(item, indx) => indx.toString()}
         renderItem={({ item }) => (
           <View style={styles.postContainer}>
-            <Image source={{ uri: item.photo }} style={styles.image} />
-            <Text style={styles.description}>{item.description}</Text>
+            <Image source={{ uri: item.photoURL }} style={styles.image} />
+            {/* <Image source={{ uri: item.photo }} style={styles.image} /> */}
+            <Text style={styles.comment}>{item.comment}</Text>
             <View style={styles.chatLocationContainer}>
               <Ionicons
                 style={styles.chatIcon}
@@ -91,7 +134,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginBottom: 8,
   },
-  description: {
+  comment: {
     marginBottom: 11,
     fontSize: 20,
     color: "#212121",

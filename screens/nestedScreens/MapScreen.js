@@ -5,11 +5,11 @@ import MapView, { Marker } from "react-native-maps";
 export const MapScreen = ({ route }) => {
   // console.log("MapScreen__route", route);
   // console.log("MapScreen__route.params", route.params);
-  console.log("MapScreen__route.params.posts", route.params.posts);
-  console.log(
-    "MapScreen__route.params.posts.location",
-    route.params.posts.location
-  );
+  // console.log("MapScreen__route.params.posts", route.params.posts);
+  // console.log(
+  //   "MapScreen__route.params.posts.location",
+  //   route.params.posts.location
+  // );
   // console.log("MapScreen__latitude", route.params.location.coords.latitude);
   // console.log("MapScreen__longitude", route.params.location.coords.longitude);
   // console.log("MapScreen__navigation.navigate", navigation.navigate);
