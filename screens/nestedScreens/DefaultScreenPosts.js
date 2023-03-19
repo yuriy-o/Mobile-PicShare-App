@@ -1,20 +1,10 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  FlatList,
-  Image,
-  TouchableOpacity,
-} from "react-native";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, Text, View, FlatList, Image } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
-import firebase from "firebase/app";
 import "firebase/firestore";
-import { collection, getDocs, doc, onSnapshot } from "firebase/firestore";
 import db from "../../firebase/config";
-import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-import { storage } from "../../firebase/config";
+// import { collection, getDocs, doc, onSnapshot } from "firebase/firestore";
 
 export const DefaultScreenPosts = ({ navigation, route }) => {
   const [posts, setPosts] = useState([]);
