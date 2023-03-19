@@ -14,7 +14,6 @@ const Main = () => {
   }, []);
 
   const routing = useRoute(stateChange);
-  useEffect(() => {}, []);
 
   return <NavigationContainer>{routing}</NavigationContainer>;
 };
