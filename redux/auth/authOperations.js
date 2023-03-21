@@ -37,7 +37,7 @@ export const authSignInUser =
   async (dispatch, getState) => {
     try {
       const user = await db.auth().signInWithEmailAndPassword(email, password);
-      console.log("user", user);
+      // console.log("user", user);
     } catch (error) {
       console.log("authSignInUser__error", error);
       console.log("authSignInUser__error.message", error.message);
@@ -63,48 +63,3 @@ export const authStateChangeUser = () => async (dispatch, getState) => {
     }
   });
 };
-
-//! 18.03.2023
-// import { getAuth, onAuthStateChanged } from "firebase/auth";
-// const auth = getAuth();
-
-// export const authStateChangeUser = () => async (dispatch, getState) => {
-//   try {
-//     await new Promise((resolve) => {
-//       onAuthStateChanged(auth, async (user) => {
-//         if (user) {
-//           const userUpdateProfile = {
-//             nickName: user.displayName,
-//             userId: user.uid,
-//           };
-
-//           dispatch(authStateChange({ stateChange: true }));
-//           dispatch(updateUserProfile(userUpdateProfile));
-//         }
-//         resolve();
-//       });
-//     });
-//   } catch (error) {
-//     console.error(error);
-//   }
-// };
-
-//! 16.03.2023
-//TODO await ??????
-// export const authStateChangeUser = () => async (dispatch, getState) => {
-//   await db.auth().onAuthStateChanged(async (user) => {
-//     if (user) {
-//       const userUpdateProfile = {
-//         nickName: user.displayName,
-//         userId: user.uid,
-//       };
-
-//       try {
-//         await dispatch(authStateChange({ stateChange: true }));
-//         await dispatch(updateUserProfile(userUpdateProfile));
-//       } catch (error) {
-//         console.error(error);
-//       }
-//     }
-//   });
-// };
