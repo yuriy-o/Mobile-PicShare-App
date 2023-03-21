@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "react-native-1-hw",
-    "slug": "react-native-1-hw",
+    "name": "photo-gallery-app",
+    "slug": "photo-gallery-app",
     "version": "1.0.0",
     "orientation": "default",
     "icon": "./assets/icon.png",
