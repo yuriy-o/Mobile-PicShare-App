@@ -41,6 +41,7 @@ export const DefaultScreenPosts = ({ navigation, route }) => {
                     navigation.navigate("Comment", {
                       postId: item.id,
                       comment: item.comment,
+                      uri: item.photoURL,
                     });
                   }}
                 />
