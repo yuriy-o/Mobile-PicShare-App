@@ -71,7 +71,8 @@ export const RegisterScreen = ({ navigation }) => {
         keyboardVerticalOffset={Platform.OS == "ios" ? 0 : -100}
       >
         <ImageBackground
-          source={require("../../assets/images/Photo_BG.png")}
+          source={require("../../assets/images/background_3.jpg")}
+          // source={require("../../assets/images/Photo_BG.png")}
           style={styles.image}
         >
           <View style={styles.back}>
