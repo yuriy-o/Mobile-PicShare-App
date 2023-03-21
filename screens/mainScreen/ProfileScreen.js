@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -6,14 +6,32 @@ import {
   Button,
   ImageBackground,
   StatusBar,
+  FlatList,
+  Image,
 } from "react-native";
-import { useDispatch } from "react-redux";
 import { AntDesign } from "@expo/vector-icons";
+import { useDispatch, useSelector } from "react-redux";
 
+import { db } from "../../firebase/config";
+import { collection, query, where, onSnapshot, doc } from "firebase/firestore";
 import { authSignOutUser } from "../../redux/auth/authOperations";
 
-export const ProfileScreen = () => {
+export const ProfileScreen = ({ navigation }) => {
   const dispatch = useDispatch();
+  const { userId, nickName, avatar } = useSelector((state) => state.auth);
+  const [userPosts, setUserPosts] = useState([]);
+
+  const getUserPosts = async () => {
+    const q = query(collection(db, "posts"), where("userId", "==", userId));
+    await onSnapshot(q, (data) => {
+      setUserPosts(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    });
+  };
+
+  useEffect(() => {
+    getUserPosts();
+    // console.log("userPosts", userPosts);
+  }, []);
 
   const signOut = () => {
     dispatch(authSignOutUser());
@@ -22,7 +40,7 @@ export const ProfileScreen = () => {
   return (
     <ImageBackground
       source={require("../../assets/images/background_3.jpg")}
-      style={styles.image}
+      style={styles.ImageBackground}
     >
       <View style={styles.back}>
         <View style={styles.backAvatar}>
@@ -40,7 +58,7 @@ export const ProfileScreen = () => {
           />
         </View>
 
-        <Text style={styles.textTitle}>Profile Name</Text>
+        <Text style={styles.textTitle}>{nickName}</Text>
 
         <StatusBar style="auto" />
         <AntDesign
@@ -50,6 +68,25 @@ export const ProfileScreen = () => {
           color="black"
           onPress={signOut}
         />
+
+        <FlatList
+          data={userPosts}
+          keyExtractor={(item, indx) => indx.toString()}
+          // keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <>
+              <View style={styles.postContainer}>
+                <Image
+                  source={{ uri: item.photoURL }}
+                  style={styles.imagePost}
+                />
+                <View style={styles.postTextContainer}>
+                  <Text style={styles.postText}>{item.comment}</Text>
+                </View>
+              </View>
+            </>
+          )}
+        />
       </View>
     </ImageBackground>
   );
@@ -57,10 +94,10 @@ export const ProfileScreen = () => {
 
 const styles = StyleSheet.create({
   delDescr: {
-    backgroundColor: "#fff",
+    backgroundColor: "#f00",
     textAlign: "center",
   },
-  image: {
+  ImageBackground: {
     flex: 1,
     resizeMode: "cover",
     justifyContent: "flex-end",
@@ -102,8 +139,8 @@ const styles = StyleSheet.create({
     fontSize: 30,
     color: "#212121",
     textAlign: "center",
-    marginTop: 92,
-    marginBottom: 32,
+    marginTop: 52,
+    marginBottom: 15,
   },
   iconSignOut: {
     position: "absolute",
@@ -111,5 +148,40 @@ const styles = StyleSheet.create({
     right: 16,
     // color: "#F6F6F6",
     color: "#999",
+  },
+  // postContainer: {
+  //   flexDirection: "row",
+  //   justifyContent: "space-around",
+  //   // justifyContent: "space-between",
+  // },
+  // imagePost: {
+  //   width: 190,
+  //   height: 120,
+  //   borderRadius: 6,
+  //   marginLeft: 10,
+  //   marginRight: 30,
+  //   marginBottom: 8,
+  // },
+  // textComment: {},
+
+  postContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 10,
+  },
+  imagePost: {
+    width: 150,
+    height: 75,
+    resizeMode: "cover",
+    marginLeft: 8,
+    borderRadius: 6,
+  },
+  postTextContainer: {
+    width: "100%",
+    marginLeft: 8,
+  },
+  postText: {
+    fontSize: 16,
   },
 });
