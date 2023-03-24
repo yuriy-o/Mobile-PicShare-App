@@ -1,3 +1,3 @@
-# Mobile Photo Gallery App // React Native 0.71
+# Mobile PicShare App // React Native 0.71
 
-![Creating repo from a template step 1](./assets/previewHomework.jpg)
+![Preview Mobile Photo Gallery App](./assets/previewHomework.jpg)
