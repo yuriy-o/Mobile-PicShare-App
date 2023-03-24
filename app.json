@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "photo-gallery-app",
-    "slug": "photo-gallery-app",
+    "name": "PicShareApp",
+    "slug": "PicShareApp",
     "version": "1.0.0",
     "orientation": "default",
     "icon": "./assets/icon.png",
@@ -22,7 +22,8 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/expo.jpg",
+        // "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       }
     },
