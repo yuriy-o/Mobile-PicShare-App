@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     bottom: 16,
   },
   backIconPlus: {
-    color: "#FF6C00",
+    color: "#0095b6",
   },
   backIconClose: {
     color: "#F6F6F6",

@@ -26,7 +26,6 @@ const initialState = {
 
 export const LoginScreen = ({ navigation }) => {
   const [state, setState] = useState(initialState);
-  
 
   const dispatch = useDispatch();
 
@@ -80,7 +79,7 @@ export const LoginScreen = ({ navigation }) => {
                 placeholderTextColor="#BDBDBD"
                 style={{
                   ...styles.input,
-                  borderColor: isFocusEmail ? `#FF6C00` : `#E8E8E8`,
+                  borderColor: isFocusEmail ? `#0095b6` : `#E8E8E8`,
                 }}
                 onFocus={() => setIsFocusEmail(true)}
                 onBlur={() => setIsFocusEmail(false)}
@@ -95,7 +94,7 @@ export const LoginScreen = ({ navigation }) => {
                 secureTextEntry={true}
                 style={{
                   ...styles.input,
-                  borderColor: isFocusPassword ? `#FF6C00` : `#E8E8E8`,
+                  borderColor: isFocusPassword ? `#0095b6` : `#E8E8E8`,
                 }}
                 onFocus={() => setIsFocusPassword(true)}
                 onBlur={() => setIsFocusPassword(false)}
@@ -188,7 +187,7 @@ const styles = StyleSheet.create({
         borderColor: "#f0f8ff",
       },
       android: {
-        backgroundColor: "#FF6C00",
+        backgroundColor: "#0095b6",
         borderColor: "transparent",
       },
     }),

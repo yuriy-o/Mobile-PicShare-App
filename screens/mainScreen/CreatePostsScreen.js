@@ -367,7 +367,7 @@ const styles = StyleSheet.create({
         borderColor: "#f0f8ff",
       },
       android: {
-        backgroundColor: "#FF6C00",
+        backgroundColor: "#0095b6",
         borderColor: "transparent",
       },
     }),

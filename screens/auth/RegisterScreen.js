@@ -77,7 +77,7 @@ export const RegisterScreen = ({ navigation }) => {
         >
           <View style={styles.back}>
             <View style={styles.backAvatar}>
-              <AntDesign
+              {/* <AntDesign
                 style={[styles.backIcon, styles.backIconPlus]}
                 name="pluscircleo"
                 size={26}
@@ -88,7 +88,8 @@ export const RegisterScreen = ({ navigation }) => {
                 name="closecircleo"
                 size={26}
                 color="black"
-              />
+              /> */}
+              <AntDesign name="user" size={84} color="#89dce0" />
             </View>
 
             <Text style={styles.textTitle}>Регистрация</Text>
@@ -103,7 +104,7 @@ export const RegisterScreen = ({ navigation }) => {
                 placeholderTextColor="#BDBDBD"
                 style={{
                   ...styles.input,
-                  borderColor: isFocus.nickname ? `#FF6C00` : `#E8E8E8`,
+                  borderColor: isFocus.nickname ? `#0095b6` : `#E8E8E8`,
                 }}
                 // onFocus={() => setIsKeyboardShow(true)}
                 onFocus={() => setIsFocus({ ...isFocus, nickname: true })}
@@ -119,7 +120,7 @@ export const RegisterScreen = ({ navigation }) => {
                 placeholderTextColor="#BDBDBD"
                 style={{
                   ...styles.input,
-                  borderColor: isFocus.email ? `#FF6C00` : `#E8E8E8`,
+                  borderColor: isFocus.email ? `#0095b6` : `#E8E8E8`,
                 }}
                 // onFocus={() => setIsKeyboardShow(true)}
                 onFocus={() => setIsFocus({ ...isFocus, email: true })}
@@ -136,7 +137,7 @@ export const RegisterScreen = ({ navigation }) => {
                 secureTextEntry={true}
                 style={{
                   ...styles.input,
-                  borderColor: isFocus.password ? `#FF6C00` : `#E8E8E8`,
+                  borderColor: isFocus.password ? `#0095b6` : `#E8E8E8`,
                 }}
                 // onFocus={() => setIsKeyboardShow(true)}
                 onFocus={() => setIsFocus({ ...isFocus, password: true })}
@@ -199,6 +200,8 @@ const styles = StyleSheet.create({
     height: 120,
     borderRadius: 16,
     backgroundColor: "#F6F6F6",
+    alignItems: "center",
+    justifyContent: "center",
   },
 
   backIcon: {
@@ -207,7 +210,7 @@ const styles = StyleSheet.create({
     bottom: 16,
   },
   backIconPlus: {
-    color: "#FF6C00",
+    color: "#0095b6",
   },
   backIconClose: {
     color: "#F6F6F6",
@@ -250,7 +253,7 @@ const styles = StyleSheet.create({
         borderColor: "#f0f8ff",
       },
       android: {
-        backgroundColor: "#FF6C00",
+        backgroundColor: "#0095b6",
         borderColor: "transparent",
       },
     }),

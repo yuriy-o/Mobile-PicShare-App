@@ -92,7 +92,7 @@ export const CommentsScreen = ({ route }) => {
             onChangeText={(value) => setComment(value)}
           />
           <TouchableOpacity style={styles.submitBtn} onPress={submitComment}>
-            <FontAwesome name="send" size={24} color="#FF6C00" />
+            <FontAwesome name="send" size={24} color="#0095b6" />
             {/* <AntDesign name="like2" size={24} color="#ffffff" /> */}
           </TouchableOpacity>
         </View>
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
     width: 34,
     height: 34,
     borderRadius: 50,
-    // backgroundColor: "#FF6C00",
+    // backgroundColor: "#0095b6",
   },
   textNickName: {
     fontSize: 17,
