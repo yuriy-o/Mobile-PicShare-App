@@ -1,14 +1,16 @@
+require("dotenv").config();
+
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDbkNl_L8BjlqhAO8qBytVDtynWJzPulIs",
-  authDomain: "react-native-social-31143.firebaseapp.com",
-  projectId: "react-native-social",
-  storageBucket: "react-native-social.appspot.com",
-  messagingSenderId: "782372432345",
-  appId: "1:782372432345:web:c24c7e1c0e8916aa0191c8",
+  apiKey: process.env.FIREBASE_2_API_KEY,
+  authDomain: process.env.FIREBASE_2_AUTH_DOMAIN,
+  projectId: process.env.FIREBASE_2_PROJECT_ID,
+  storageBucket: process.env.FIREBASE_2_STORAGE_BUCKET,
+  messagingSenderId: process.env.FIREBASE_2_MESSAGING_SENDER_ID,
+  appId: process.env.FIREBASE_2_APP_ID,
 };
 
 export const app = initializeApp(firebaseConfig);

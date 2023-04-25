@@ -3,6 +3,8 @@
 // import "firebase/storage";
 // import "firebase/firestore";
 
+require("dotenv").config();
+
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import "firebase/compat/storage";
@@ -13,13 +15,13 @@ import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyB2aYvslUEqeNOwvQPj3u20NQdGjQ1hxZo",
-  authDomain: "react-nativ-hw-01.firebaseapp.com",
-  projectId: "react-nativ-hw-01",
-  storageBucket: "react-nativ-hw-01.appspot.com",
-  messagingSenderId: "816373487861",
-  appId: "1:816373487861:web:8176601f3e40c387500dbc",
-  measurementId: "G-4LM9WXTJSG",
+  apiKey: process.env.FIREBASE_API_KEY,
+  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.FIREBASE_PROJECT_ID,
+  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.FIREBASE_APP_ID,
+  measurementId: process.env.FIREBASE_MEASUREMENT_ID,
 };
 
 // Initialize Firebase
